@@ -107,3 +107,19 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     });
   }
 };
+
+// setup monaco to be compiled through webpack
+const MonacoWebpackPlugin = require(`monaco-editor-webpack-plugin`);
+
+exports.onCreateWebpackConfig = ({ actions }) => {
+  actions.setWebpackConfig({
+    plugins: [new MonacoWebpackPlugin()],
+  });
+};
+
+// serve static files
+const express = require('express');
+
+exports.onCreateDevServer = ({ app }) => {
+  app.use(express.static('public'));
+};

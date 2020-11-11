@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer';
 
-import { Layout, Link } from '$components';
+import { Layout, Link } from '../components';
 import NextPrevious from '../components/NextPrevious';
 import config from '../../config';
 import { Edit, StyledHeading, StyledMainWrapper } from '../components/styles/Docs';
@@ -66,9 +66,9 @@ export default class MDXRuntimeTest extends Component {
       });
 
     // meta tags
-    const metaTitle = mdx.frontmatter.metaTitle;
+    const metaTitle = mdx.frontmatter.metaTitle || mdx.frontmatter.title;
 
-    const metaDescription = mdx.frontmatter.metaDescription;
+    const metaDescription = mdx.frontmatter.metaDescription || mdx.frontmatter.title;
 
     let canonicalUrl = config.gatsby.siteUrl;
 
@@ -92,13 +92,6 @@ export default class MDXRuntimeTest extends Component {
         </Helmet>
         <div className={'titleWrapper'}>
           <StyledHeading>{mdx.fields.title}</StyledHeading>
-          <Edit className={'mobileView'}>
-            {docsLocation && (
-              <Link className={'gitBtn'} to={`${docsLocation}/${mdx.parent.relativePath}`}>
-                <img src={gitHub} alt={'Github logo'} /> Edit on GitHub
-              </Link>
-            )}
-          </Edit>
         </div>
         <StyledMainWrapper>
           <MDXRenderer>{mdx.body}</MDXRenderer>
@@ -106,6 +99,13 @@ export default class MDXRuntimeTest extends Component {
         <div className={'addPaddTopBottom'}>
           <NextPrevious mdx={mdx} nav={nav} />
         </div>
+        <Edit className={'mobileView'}>
+          {docsLocation && (
+            <Link className={'gitBtn'} to={`${docsLocation}/${mdx.parent.relativePath}`}>
+              <img src={gitHub} alt={'Github logo'} /> Found an issue? Edit this page on GitHub
+            </Link>
+          )}
+        </Edit>
       </Layout>
     );
   }

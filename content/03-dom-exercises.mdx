@@ -1,0 +1,66 @@
+---
+title: "DOM Exercises"
+---
+
+Short exercises to practice DOM manipulation!
+
+The exercises are set up like this. You'll have a Task, like this:
+
+```
+Find the `<p>` tag and change its text to say `I updated it!`
+```
+
+Then some sample of what the HTML looks like:
+
+```html
+<div class="exercise">
+  <p>Welcome to the sandbox!</p>
+</div>
+```
+
+And a Code Sandbox that shows you the HTML, along with a live code editor to try out.
+
+Give this exercise a shot! Try writing some code in the editor below. Click the **Run Code** button to run your code in the sandbox. Click the **Run Test** button to see if your code passes the test.
+
+<Sandbox
+  starterCode={`const p = document.querySelector("p")
+console.log(p)
+  `}
+  html={`
+<div class="exercise">
+  <p>Welcome to the sandbox!</p>
+</div>
+  `}
+  test={`
+describe('h3', function () {
+  it('should have the text "Hello!"', function () {
+    const h3 = document.querySelector("h3")
+    chai.expect(h3.textContent).to.equal("Hello!");
+  });
+});
+  `}
+/>
+
+You can use `console.log` in the sandbox too, so you can check your console and inspect your variables.
+
+If you're stuck, you can also view the solution and some extra resources below.
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const h3 = document.querySelector("h3")
+h3.textContent = "Hello!"
+```
+
+</details>
+
+# Resources
+
+- [querySelector](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector)
+- [CSS Selector Reference](https://www.w3schools.com/cssref/css_selectors.asp)
+- [textContent](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
+
+When you're done, click Next below to try out some more exercises!

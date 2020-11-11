@@ -1,0 +1,374 @@
+---
+title: "DOM Reference"
+---
+
+If you need a place to look up all the methods for manipulating the DOM, you've come to the right place!
+
+You don't need to memorize all of these. Focus on the following:
+
+- Finding elements:
+  - `element.querySelector("selector")`
+- Creating elements:
+  - `document.createElement("tagName")` and `element.append(child)`
+  - OR `element.innerHTML = "<p>New Child Element</p>`
+- Updating elements:
+  - `pTag.textContent = "new content"` => `<p>new content</p>`
+  - `imgTag.src = "some-image.jpg"` => `<img src="some-image.jpg"`
+  - `input.value` => get/set the value in a form input field (like `<input>`, `<select>`, `<textarea>`, etc)
+- Removing elements:
+  - `element.remove()`
+
+# Finding Elements
+
+## querySelector
+### _targetElement_.querySelector(_selectors_)
+Returns the first child element of _targetElement_ (looking _down_ the DOM tree) that matches the given CSS _selectors_.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelector
+
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li>Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+// find the first UL with the id of "cards" within the document
+const cardsUl = document.querySelector("ul#cards")
+// find the first LI within the cardsUl
+const firstCard = cardsUl.querySelector("li")
+```
+
+## getElementById
+### document.getElementById(_id_)
+Returns the first DOM element with the given _id_.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById
+
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li>Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+// find the first UL with the id of "cards" within the document
+const cardsUl = document.getElementById("cards")
+```
+
+## querySelectorAll
+### _targetElement_.querySelectorAll(_selectors_)
+Returns a collection (a `NodeList`) of all children of _targetElement_ (looking _down_ the DOM tree) that match the given CSS _selectors_. You can call `.forEach` on the resulting collection.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/querySelectorAll
+
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li>Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+// finds the first UL with the id of "cards" within the document
+const cardsUl = document.querySelector("ul#cards")
+
+// finds ALL LI elements within the cardUl
+const allCards = cardsUl.querySelectorAll("li")
+
+// querySelectorAll returns a NodeList, which we can call .forEach on
+allCards.forEach(function(cardLi) {
+  cardLi.style.color = "red"
+})
+```
+
+## closest
+### _targetElement_.closest(_selectors_)
+Returns the first parent of _targetElement_ that matches the given CSS _selectors_. Like querySelector, but looking _up_ the DOM instead of looking _down_. Useful in event handlers to find a child element's parent.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
+
+
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li>Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+// finds all LI elements
+const cards = document.querySelectorAll("li")
+
+cards.forEach(function(cardLi) {
+  // find the closest parent to the list item
+  const closestUl = cardLi.closest("ul#cards")
+  console.log("The closest parent UL is", closestUl)
+})
+```
+
+## matches
+### _targetElement_.matches(_selectors_)
+Returns true if the _targetElement_ matches the provided CSS _selectors_ and false if it doesn't match. Useful with event delegation to run conditional logic based on the target element of the event.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/matches
+
+Example 1:
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li class="flipped">Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+// finds all LI elements
+const cards = document.querySelectorAll("li")
+
+cards.forEach(function(cardLi) {
+  // check if the LI matches the CSS selector
+  if (cardLi.matches(".flipped")) {
+    console.log("The flipped card is", cardLi)
+  }
+})
+```
+
+Example 2 (event delegation):
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li class="flipped">Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+const cardsUl = document.querySelector("ul#cards")
+
+cardsUl.addEventListener("click", function(event) {
+  if (event.target.matches(".flipped")) {
+    console.log("The flipped card was clicked")
+  }
+})
+```
+
+## children
+### _targetElement_.children
+Returns an HTML collection of all the direct child nodes of _targetElement_.
+
+https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children
+
+## parentElement
+### _targetElement_.parentElement
+Returns the element's parent node...yeah.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Node/parentElement
+
+# Creating Elements
+
+## createElement
+### document.createElement(_tagName_)
+Creates an element with the given _tagName_. The element won't automatically be inserted on the DOM - you have to add it somewhere! See [append](#append) and [prepend](#prepend) for examples.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li>Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+const cardsUl = document.querySelector("ul#cards")
+const newLi = document.createElement("li") // creates a new LI tag with nothing inside
+newLi.textContent = "Card 4" // sets the text inside the LI
+cardsUl.append(newLi) // append as the last child element of cardsUl
+```
+
+## append
+### _targetElement_.append(_childElement1_, _childElement2_, ...)
+
+https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append
+
+## prepend
+### _targetElement_.prepend(_childElement1_, _childElement2_, ...)
+
+https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend
+
+## innerHTML
+### _targetElement_.innerHTML = _htmlString_
+Takes a string representing HTML elements and creates new DOM elements as children of the _targetElement_. !!Use with caution!! If you don't have control over the _htmlString_ being used to generate the DOM elements, you may open yourself up to [Cross-Site Scripting attacks](https://gomakethings.com/preventing-cross-site-scripting-attacks-when-using-innerhtml-in-vanilla-javascript/). Also, setting the innerHTML on a target element will destroy any existing DOM elements inside that target.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
+
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li>Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+const cardsUl = document.querySelector("ul#cards")
+cardsUl.innerHTML += "<li>Card 4</li>" // one powerful line of code!
+```
+
+In the example above, changing the innerHTML works something like this:
+1. get the innerHTML: convert the current DOM elements inside the cardsUl to a string (`<li>Card 1</li><li>Card 2</li><li>Card 3</li>`)
+2. append to the innerHTML string: add another li to the end of the string (`<li>Card 1</li><li>Card 2</li><li>Card 3</li><li>Card 4</li>`)
+3. set the innerHTML: remove all existing DOM nodes inside the UL, and replace them with new DOM nodes for each element represented in the innerHTML string
+
+## insertAdjacentHtml
+### _targetElement_.insertAdjacentHtml(_position_, _htmlString_)
+Takes a position (a string representing a position relative to _targetElement_) and an _htmlString_ (a string representing new DOM nodes to be created), and inserts them into the DOM. !!Use with caution!! See link in [innerHTML](#innerhtml) for potential issues around cross-site scripting vulnerabilities with this approach. Unlike innerHTML, insertAdjacentHtml _won't_ destroy child DOM elements of the _targetElement_.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+
+```html
+<ul id="cards">
+  <li>Card 1</li>
+  <li>Card 2</li>
+  <li>Card 3</li>
+</ul>
+```
+
+```js
+const cardsUl = document.querySelector("ul#cards")
+// beforeend will insert after the last child elemnt
+cardsUl.insertAdjacentHTML("beforeend", "<li>Card 4</li>")
+```
+
+# Updating Elements
+
+## textContent
+### _targetElement_.textContent
+Get/set the text content (the content between the opening and closing HTML tags). Also see [innerText](#innertext).
+
+https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+
+```html
+<p id="article">How to update the DOM</p>
+```
+
+```js
+const article = document.querySelector("#article")
+console.log(article.textContent) // "How to update the DOM"
+article.textContent = "Now you try"
+```
+
+## innerText
+### _targetElement_.innerText
+Get/set the "rendered" inner text (the text between the opening and closing HTML tags). Works similiarly to [textContent](#textcontent), but with some subtle differences. For a detailed explanation, see: [The poor, misunderstood innerText](http://perfectionkills.com/the-poor-misunderstood-innerText/)
+
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText
+
+```html
+<p id="article">How to update the DOM</p>
+```
+
+```js
+const article = document.querySelector("#article")
+console.log(article.innerText) // "How to update the DOM"
+article.innerText = "Now you try"
+```
+
+## classList
+### _targetElement_.classList
+Used to manipulate the _targetElement_'s CSS classes. Returns a "DOMTokenList" that you can use to add/remove CSS classes from an element. See also [className](#classname).
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
+
+```html
+<p id="article">How to update the DOM</p>
+```
+
+```js
+const article = document.querySelector("#article")
+article.classList.add("bold") // <p class="bold">
+article.classList.add("green") // <p class="bold green">
+article.classList.remove("bold") // <p class="green">
+```
+
+## className
+### _targetElement_.className
+Get/set the element's _class_ attribute. Unlike [classList](#classlist), this returns a string representing the element's CSS classes.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/className
+
+```html
+<p id="article" class="bold green">How to update the DOM</p>
+```
+
+```js
+const article = document.querySelector("#article")
+console.log(article.className) // "bold green"
+article.className = "italic" // <p class="italic">
+```
+
+## dataset
+### _targetElement_.dataset
+
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLOrForeignElement/dataset
+
+# Deleting Elements
+
+## remove
+### _targetElement_.remove()
+Removes the _targetElement_ from the DOM tree.
+
+```html
+<p id="article">How to update the DOM</p>
+```
+
+```js
+const article = document.querySelector("#article")
+article.remove() // it's gone!
+```
+
+# Working with Forms
+
+## Accessing Form Fields
+Any time you need to access the user's input from the form, you need to access the _input fields_. Since forms and inputs have a special relationship in HTML (a form always needs input fields), there are some shortcuts for accessing input fields in a form.
+
+```html
+<form>
+  <input type="text" name="username" id="username-field" />
+  <input type="password" name="password" id="password-field" />
+  <input type="submit" />
+</form>
+```
+
+```js
+const form = document.querySelector("form")
+form.username // will return the input field using its 'name' attribute
+form["username"] // will also return the input field using its 'name' attribute
+form["username-field"] // will also return the input field using its 'id' attribute
+```
+
+# Getting User Input
+### _input_.value
+Returns the value of the given input field. For text inputs and textareas, the value is the text that the user inputs. For select tags, the value represents which option the user selected from the dropdown.
+
+```html
+<form>
+  <input type="text" name="username" id="username-field" />
+  <input type="password" name="password" id="password-field" />
+  <input type="submit" />
+</form>
+```
+
+```js
+const form = document.querySelector("form")
+form.username
+form.username.value // get the value of the input field (whatever the user entered)
+```

@@ -69,8 +69,6 @@ const calculateTreeData = edges => {
 
   const tmp = [...forcedNavOrder];
 
-  if (config.gatsby && config.gatsby.trailingSlash) {
-  }
   tmp.reverse();
   return tmp.reduce((accu, slug) => {
     const parts = slug.split('/');
@@ -115,20 +113,25 @@ const calculateTreeData = edges => {
   }, tree);
 };
 
-const Tree = ({ edges }) => {
+const Tree = ({ edges, location }) => {
   let [treeData] = useState(() => {
     return calculateTreeData(edges);
   });
 
   const defaultCollapsed = {};
 
+  const activeParent = location.pathname.split('/')[1];
+
   treeData.items.forEach(item => {
-    if (config.sidebar.collapsedNav && config.sidebar.collapsedNav.includes(item.url)) {
-      defaultCollapsed[item.url] = true;
-    } else {
+    const itemParent = item.url.split('/')[1];
+
+    if (itemParent && activeParent === itemParent) {
       defaultCollapsed[item.url] = false;
+    } else {
+      defaultCollapsed[item.url] = true;
     }
   });
+
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
   const toggle = url => {

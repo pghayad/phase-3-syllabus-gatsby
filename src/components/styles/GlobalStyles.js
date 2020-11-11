@@ -224,11 +224,7 @@ export const baseStyles = injectGlobal`
   .headerTitle {
     height: auto;
     font-size: 16px;
-    line-height: 1.5;
-    font-weight: 300;
     color: #fff !important;
-    margin-top: 16px;
-    text-transform: uppercase;
   }
   .headerTitle a {
     color: #fff;
@@ -264,6 +260,7 @@ export const baseStyles = injectGlobal`
     border: 0;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     box-shadow: -1px 0px 4px 1px rgba(175, 158, 232, 0.4);
     -webkit-box-shadow: -1px 0px 4px 1px rgba(175, 158, 232, 0.4);
     -moz-box-shadow: -1px 0px 4px 1px rgba(175, 158, 232, 0.8);
@@ -317,10 +314,9 @@ export const baseStyles = injectGlobal`
     opacity: 0.7;
   }
   pre {
-    border: 0 !important;
-    background-color: rgb(245, 247, 249); /* !important; */
+    background-color: rgb(245, 247, 249);
   }
-  
+
   blockquote {
     color: rgb(116, 129, 141);
     margin: 0px 0px 24px;

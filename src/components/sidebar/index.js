@@ -116,7 +116,7 @@ const SidebarLayout = ({ location }) => (
             />
           ) : null}
           <ul className={'sideBarUL'}>
-            <Tree edges={allMdx.edges} />
+            <Tree edges={allMdx.edges} location={location} />
             {config.sidebar.links && config.sidebar.links.length > 0 && <Divider />}
             {config.sidebar.links.map((link, key) => {
               if (link.link !== '' && link.text !== '') {
