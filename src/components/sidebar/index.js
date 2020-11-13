@@ -94,7 +94,7 @@ const SidebarLayout = ({ location }) => (
   <StaticQuery
     query={graphql`
       query {
-        allMdx {
+        allMdx(filter: { frontmatter: { publish: { ne: false } } }) {
           edges {
             node {
               fields {

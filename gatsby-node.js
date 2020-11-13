@@ -14,7 +14,7 @@ exports.createPages = ({ graphql, actions }) => {
       graphql(
         `
           {
-            allMdx {
+            allMdx(filter: { frontmatter: { publish: { ne: false } } }) {
               edges {
                 node {
                   fields {

@@ -44,7 +44,6 @@ ${runTest ? 'runTests()' : 'hideTests()'}
 
 // TODO: check message origin (use an env var to set origins)
 window.addEventListener('message', ({ data }) => {
-  console.log(data);
   switch (data.type) {
     case 'code':
       addScript(data.payload);

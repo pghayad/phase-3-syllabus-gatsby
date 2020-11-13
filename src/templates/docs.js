@@ -138,7 +138,7 @@ export const pageQuery = graphql`
         metaDescription
       }
     }
-    allMdx {
+    allMdx(filter: { frontmatter: { publish: { ne: false } } }) {
       edges {
         node {
           fields {
