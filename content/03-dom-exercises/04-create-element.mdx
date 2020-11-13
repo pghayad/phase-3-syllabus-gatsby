@@ -1,0 +1,56 @@
+---
+title: "Create 2"
+---
+
+# Task
+
+Given this array of fruits:
+
+```js
+const fruits = ["🍏", "🍉", "🍍"]
+```
+
+Create a new `<li>` tag in this format for each fruit:
+
+```html
+<li class="fruit">🍏</li>
+```
+
+And insert each `<li>` tag inside the `ul#emoji-list`.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h3>Great Fruits</h3>
+  <ul id="emoji-list">
+    <!-- fruits go here -->
+  </ul>
+</div>
+```
+
+# Code Sandbox
+<Sandbox html="/dom-exercise-04.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const fruitEmojis = ["🍏", "🍉", "🍍"]
+const emojiList = document.querySelector("#emoji-list")
+
+fruitEmojis.forEach(function(emoji) {
+  const li = document.createElement("li")
+  li.className = "fruit"
+  li.textContent = emoji
+  emojiList.append(li)
+})
+```
+
+</details>
+
+# Resources
+
+- [createElement](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement)

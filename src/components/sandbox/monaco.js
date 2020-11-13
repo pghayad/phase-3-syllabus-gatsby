@@ -6,7 +6,7 @@ const StyledContainer = styled.div`
   width: 100%;
   height: 200px;
   border: none;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   border: 2px solid black;
 `;
 

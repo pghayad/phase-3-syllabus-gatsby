@@ -1,14 +1,14 @@
 const config = {
   gatsby: {
     pathPrefix: '/',
-    siteUrl: 'https://hasura.io',
+    siteUrl: 'https://flatiron-phase-3.netlify.app',
     gaTrackingId: null,
     trailingSlash: false,
   },
   header: {
     logo:
       'https://instructure-uploads.s3.amazonaws.com/account_158020000000000001/attachments/43742/logo-primary.svg',
-    logoLink: 'https://learning.flatironschool.com/',
+    logoLink: 'https://flatiron-phase-3.netlify.app',
     title: 'Phase 3 Javascript Resources',
     githubUrl: '',
     helpUrl: '',
@@ -38,11 +38,13 @@ const config = {
     title: 'Phase 3 Syllabus',
   },
   siteMetadata: {
-    title: 'Gatsby Gitbook Boilerplate | Hasura',
-    description: 'Documentation built with mdx. Powering hasura.io/learn ',
+    title: 'Phase 3 Syllabus | Flatiron',
+    description:
+      'Documentation built with mdx. Built from https://github.com/hasura/gatsby-gitbook-boilerplate',
     ogImage: null,
-    docsLocation: 'https://github.com/hasura/gatsby-gitbook-boilerplate/tree/master/content',
-    favicon: 'https://graphql-engine-cdn.hasura.io/img/hasura_icon_black.svg',
+    docsLocation: 'https://github.com/ihollander/phase-3-syllabus-gatsby/tree/master/content',
+    favicon:
+      'https://instructure-uploads.s3.amazonaws.com/account_158020000000000001/attachments/43718/flatiron-favicon.ico',
   },
   pwa: {
     enabled: false, // disabling this will also remove the existing service worker.

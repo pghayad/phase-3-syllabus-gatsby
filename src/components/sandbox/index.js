@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 import Editor from './monaco';
 import Iframe from './iframe';
 
+import useLocalStorage from '../../hooks/useLocalStorage';
+
 const colors = {
   pending: 'yellow',
   passing: 'green',
@@ -18,7 +20,11 @@ const StyledContainer = styled.div`
 // TODO: instead of iframe, https://developers.google.com/caja/docs/gettingstarted
 
 const Sandbox = ({ html, test, starterCode = '// your code here' }) => {
-  const [editorValue, setEditorValue] = useState(starterCode);
+  const [storedValue, setValue] = useLocalStorage(html, starterCode);
+
+  console.log(storedValue);
+
+  const [editorValue, setEditorValue] = useState(storedValue);
 
   const [runTest, setRunTest] = useState(false);
 
@@ -27,6 +33,7 @@ const Sandbox = ({ html, test, starterCode = '// your code here' }) => {
   const [testStatus, setTestStatus] = useState('pending');
 
   const handleRunCode = useCallback(({ code, runTest }) => {
+    setValue(code);
     setEditorValue(code);
     setRunTest(runTest);
     forceUpdate();
@@ -48,7 +55,7 @@ const Sandbox = ({ html, test, starterCode = '// your code here' }) => {
         test={test}
         runTest={runTest}
       />
-      <Editor value={starterCode} onRunCode={handleRunCode} />
+      <Editor value={editorValue} onRunCode={handleRunCode} />
     </StyledContainer>
   );
 };

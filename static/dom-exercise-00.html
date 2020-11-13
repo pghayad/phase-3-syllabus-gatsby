@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js" integrity="sha512-x3BwhuxT44pOQZanacQyDnrB2r1L1AUfjUaefYArTHR9sHEvvy3NSnnm5Z7GAl5YPc3+GEWFT0S34obDSzUvaQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/8.2.1/mocha.min.js"></script>
+
+  <!-- Mocha setup -->
+  <script>
+    mocha.setup({
+      ui: 'bdd',
+      cleanReferencesAfterRun: false
+    });
+  </script>
+</head>
+<body>
+  <div id='mocha'></div>
+
+  <div class="exercise">
+  <p>Welcome to the sandbox!</p>
+</div>
+
+<script>
+  describe('p', function () {
+    it('should have the text "I updated it!"', function () {
+      const p = document.querySelector("p")
+      chai.expect(p.textContent).to.equal("I updated it!");
+    });
+  });
+</script>
+
+
+  <script src="./assets/index.js"></script>
+</body>
+</html>

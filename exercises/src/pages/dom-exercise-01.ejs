@@ -1,0 +1,12 @@
+<div class="exercise">
+  <h3>Change My Text</h3>
+</div>
+
+<script>
+  describe('h3', function () {
+    it('should have the text "Hello!"', function () {
+      const h3 = document.querySelector("h3")
+      chai.expect(h3.textContent).to.equal("Hello!");
+    });
+  });
+</script>

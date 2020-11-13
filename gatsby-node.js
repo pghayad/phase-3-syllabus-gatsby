@@ -42,6 +42,7 @@ exports.createPages = ({ graphql, actions }) => {
             component: path.resolve('./src/templates/docs.js'),
             context: {
               id: node.fields.id,
+              layout: 'mdx',
             },
           });
         });

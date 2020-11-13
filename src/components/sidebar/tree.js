@@ -120,7 +120,9 @@ const Tree = ({ edges, location }) => {
 
   const defaultCollapsed = {};
 
-  const activeParent = location.pathname.split('/')[1];
+  const parts = location.pathname.split('/');
+
+  const activeParent = parts ? parts[1] : null;
 
   treeData.items.forEach(item => {
     const itemParent = item.url.split('/')[1];

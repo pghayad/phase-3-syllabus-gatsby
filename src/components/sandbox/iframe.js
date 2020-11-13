@@ -5,23 +5,26 @@ const StyledIFrame = styled.iframe`
   width: 100%;
   height: 200px;
   border: none;
-  margin: 1rem 0;
+  margin-top: 1rem;
   padding: 0.5rem;
   border: 2px solid black;
 `;
 
-const IFrame = ({ javascript, html, test, runTest, onRunTest }) => {
+const IFrame = ({ javascript, html, runTest, onRunTest }) => {
   const iframeRef = useRef();
 
   useEffect(() => {
-    const sendCode = () => {
-      iframeRef.current.contentWindow.postMessage({ javascript, html, test, runTest }, '*');
+    const sendMessage = data => {
+      iframeRef.current.contentWindow.postMessage(data, '*');
     };
 
     const handler = event => {
       switch (event.data.type) {
         case 'ready':
-          sendCode();
+          sendMessage({
+            type: 'code',
+            payload: { javascript, runTest },
+          });
           break;
         case 'run_test':
           onRunTest(event.data.payload);
@@ -34,14 +37,18 @@ const IFrame = ({ javascript, html, test, runTest, onRunTest }) => {
       }
     };
 
-    if (iframeRef.current) sendCode();
+    if (iframeRef.current) {
+      sendMessage({
+        type: 'reload',
+      });
+    }
 
     window.addEventListener('message', handler);
 
     return () => window.removeEventListener('message', handler);
-  }, [javascript, html, test, runTest, onRunTest]);
+  }, [javascript, runTest, onRunTest]);
 
-  return <StyledIFrame title="sandbox" ref={iframeRef} src="/iframe.html" />;
+  return <StyledIFrame title="sandbox" ref={iframeRef} src={html} />;
 };
 
 export default IFrame;

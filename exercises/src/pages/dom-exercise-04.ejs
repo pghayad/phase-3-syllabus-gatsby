@@ -1,0 +1,31 @@
+<div class="exercise">
+  <h3>Great Fruits</h3>
+  <ul id="emoji-list">
+    <!-- fruits go here -->
+  </ul>
+</div>
+
+<script>
+  describe('ul#emoji-list', function () {
+    const ul = document.querySelector("#emoji-list")
+
+    it('should have three children', function () {
+      chai.expect(ul.children.length).to.equal(3)
+    });
+
+    it('should display the first emoji', function () {
+      const firstLi = ul.children[0]
+      chai.expect(firstLi.textContent).to.equal("🍏");
+    });
+
+    it('should display the last emoji', function () {
+      const firstLi = ul.children[2]
+      chai.expect(firstLi.textContent).to.equal("🍍");
+    });
+
+    it('should give each li a class of "fruit"', function () {
+      const firstLi = ul.children[0]
+      chai.expect(firstLi.className).to.equal("fruit");
+    });
+  });
+</script>
