@@ -1,0 +1,42 @@
+---
+title: "Lesson Videos: Serializers"
+publish: true
+---
+
+# Video Playlist
+
+<YoutubeEmbed link="https://www.youtube.com/embed/videoseries?list=PLc6AmvC5ZybyK6tUJa7SLIY-c9O8Qp5cU " />
+
+Make sure to watch the entire playlist! You can also access it directly on Youtube: https://www.youtube.com/watch?v=98eH_-Cv81A&list=PLc6AmvC5ZybyK6tUJa7SLIY-c9O8Qp5cU
+
+# Code
+
+The starter code and completed code for this lecture can be accessed here: https://github.com/ihollander/js-lectures-rails-serializers
+
+Fork and clone this repo if you want to code along!
+
+# Setup
+
+- Add the `active_model_serializers` gem: `bundle add active_model_serializers`
+- Create a new serializer: `rails g serializer animal name image description donations`
+- Add associations and other methods to serializers
+
+# Resources
+
+- [Active Model Serializers](https://github.com/rails-api/active_model_serializers/blob/v0.10.6/docs/README.md)
+- [N+1 Problem](https://semaphoreci.com/blog/2017/08/09/faster-rails-eliminating-n-plus-one-queries.html)
+
+# Notes
+Animal >- Species
+
+```json
+  {
+    "id": 1,
+    "name": "Jimmy",
+    "description": "not actually a panda",
+    "image_url": "https://i1.wp.com/www.redpandanetwork.org/wp-content/uploads/2018/10/Photo-1-for-Give-page.png?fit=584%2C584&ssl=1",
+    "donations": 140,
+    "species_name": "Red Panda",
+    "diet": "omnivore"
+  },
+```

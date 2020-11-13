@@ -28,6 +28,7 @@ const config = {
       '/01-js-fundamentals',
       '/02-dom-manipulation',
       '/03-dom-exercises',
+      '/04-event-handling',
     ],
     openNav: [
       '/00-intro', // add trailing slash if enabled above
