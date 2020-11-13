@@ -22,8 +22,6 @@ const StyledContainer = styled.div`
 const Sandbox = ({ html, test, starterCode = '// your code here' }) => {
   const [storedValue, setValue] = useLocalStorage(html, starterCode);
 
-  console.log(storedValue);
-
   const [editorValue, setEditorValue] = useState(storedValue);
 
   const [runTest, setRunTest] = useState(false);
