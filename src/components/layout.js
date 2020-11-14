@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { MDXProvider } from '@mdx-js/react';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 
 import { MonacoProvider } from './sandbox/context';
 import ThemeProvider from './theme/themeProvider';
@@ -62,27 +63,31 @@ const RightSideBarWidth = styled.div`
   width: 224px;
 `;
 
+const queryCache = new QueryCache();
+
 const Layout = ({ children, location }) => (
   <ThemeProvider location={location}>
     <MDXProvider components={mdxComponents}>
       <MonacoProvider>
-        <Wrapper>
-          <LeftSideBarWidth className={'hiddenMobile'}>
-            <Sidebar location={location} />
-          </LeftSideBarWidth>
-          {config.sidebar.title ? (
-            <div
-              className={'sidebarTitle sideBarShow'}
-              dangerouslySetInnerHTML={{ __html: config.sidebar.title }}
-            />
-          ) : null}
-          <Content>
-            <MaxWidth>{children}</MaxWidth>
-          </Content>
-          <RightSideBarWidth className={'hiddenMobile'}>
-            <RightSidebar location={location} />
-          </RightSideBarWidth>
-        </Wrapper>
+        <ReactQueryCacheProvider queryCache={queryCache}>
+          <Wrapper>
+            <LeftSideBarWidth className={'hiddenMobile'}>
+              <Sidebar location={location} />
+            </LeftSideBarWidth>
+            {config.sidebar.title ? (
+              <div
+                className={'sidebarTitle sideBarShow'}
+                dangerouslySetInnerHTML={{ __html: config.sidebar.title }}
+              />
+            ) : null}
+            <Content>
+              <MaxWidth>{children}</MaxWidth>
+            </Content>
+            <RightSideBarWidth className={'hiddenMobile'}>
+              <RightSidebar location={location} />
+            </RightSideBarWidth>
+          </Wrapper>
+        </ReactQueryCacheProvider>
       </MonacoProvider>
     </MDXProvider>
   </ThemeProvider>

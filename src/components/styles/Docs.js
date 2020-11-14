@@ -57,7 +57,9 @@ export const StyledMainWrapper = styled.div`
     }
   }
 
-  a {
+  a,
+  [role='link'] {
+    cursor: pointer;
     transition: color 0.15s;
     color: ${props => props.theme.colors.link};
   }

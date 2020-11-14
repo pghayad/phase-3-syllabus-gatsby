@@ -2,6 +2,29 @@
 
 Starter template: https://github.com/hasura/gatsby-gitbook-starter
 
+## Local Development
+
+To run locally, run:
+
+```
+$ npm start
+```
+
+This will run two things:
+
+- A build script to create the exercise files
+- `gatsby develop` to run Gatsby in dev mode
+
+You'll need a [Youtube API key](https://developers.google.com/youtube/v3/getting-started) in an environment variable to get the `<YoutubePlaylist>` component working:
+
+```
+GATSBY_YOUTUBE_API=your_key_here
+```
+
+## Deploying
+
+This app is deployed via Netlify and integrated with Github, so any changes pushed up to the `main` branch on Github will be deployed on Netlify (the build takes a bit of time).
+
 ## Adding new pages
 
 - Create a new `.mdx` file in the `content` directory

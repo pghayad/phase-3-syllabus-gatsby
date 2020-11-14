@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import CodeBlock from './codeBlock';
 import AnchorTag from './anchor';
 import YoutubeEmbed from './YoutubeEmbed';
+import YoutubePlaylist from './YoutubePlaylist';
 import Sandbox from '../sandbox';
 
 const StyledPre = styled('pre')`
@@ -39,6 +40,7 @@ export default {
   code: CodeBlock,
   a: AnchorTag,
   YoutubeEmbed,
+  YoutubePlaylist,
   Sandbox,
   // TODO add `img`
   // TODO add `blockquote`
