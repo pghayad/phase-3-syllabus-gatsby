@@ -1,0 +1,937 @@
+---
+title: "Lesson Videos: this and Execution Context"
+publish: true
+---
+
+# Video Playlist
+
+<YoutubePlaylist playlistId="PLc6AmvC5ZybxNfdsWJf4_Iny6dpD1SCtD" />
+
+# Code
+
+The starter code and completed code for this lecture can be accessed here: https://github.com/ihollander/js-lectures-oojs/tree/master/this-and-execution-context
+
+Fork and clone this repo if you want to code along!
+
+# Intro - Ruby & `self`
+
+There are _some_ similarities between `this` in JavaScript and `self` in Ruby. Looking at the similarities will get us _closer_ to understanding JavaScript's `this`. **Please do not think of them as being the same thing, however**.
+
+Let's have a look at this Ruby class for creating a dog:
+
+```rb
+class Dog
+  attr_accessor :first_name, :fav_snacks
+
+  def initialize(first_name, fav_snacks)
+    @first_name = first_name
+    @fav_snacks = fav_snacks
+  end
+
+  def say_name
+    # in Ruby, self in an instance method refers to the instance.
+    puts "woof my name is #{self.first_name}"
+  end
+
+  def say_fav_snacks
+    self.fav_snacks.each do |snack|
+      puts "#{self.first_name} likes #{snack}"
+    end
+  end
+end
+
+dog1 = Dog.new("Fezzik", ["Peanut Butter", "Soccer Balls"])
+dog1.say_name
+```
+
+Let's break down our Ruby example to the essentials. Our goal by the end of this series is going to be to re-create this functionality in Javascript, and learn about how the rules for Object Orientation in Javascript differ from Ruby to Javascript.
+
+First, we have a class definition:
+
+```rb
+class Dog
+end
+```
+
+This class definition gives us a blueprint for creating objects, so that I can call `Dog.new` and know that all objects created with this function will have the same methods.
+
+We also have a few instance variables and instance methods. Instance variables and instance methods are what make one instance of the class unique from the others; they're the **data** and **behavior** that makes up each instance.
+
+Let's talk about what happens when we run this code:
+
+```rb
+dog1 = Dog.new(
+  "Fezzik", ["Peanut Butter", "Soccer Balls"]
+)
+dog1.say_name
+```
+
+First, we create a new *instance* of a Dog by calling `Dog.new`. The arguments we pass in to `new` are assigned to *instance variables* in the `initialize` method:
+
+```rb
+def initialize(first_name, fav_snacks)
+  @first_name = first_name
+  @fav_snacks = fav_snacks
+end
+```
+
+When we call `dog1.say_name`, this will run the *instance method* of `say_name` on our Dog object.
+
+```rb
+def say_name
+  puts "woof my name is #{self.first_name}"
+end
+```
+
+Even though we don't pass any arguments into this method when it's called, we can still access some data inside of this method; the reason we have access to that data is from the keyword of `self`. You can think of `self` here as some additional *context* that is passed into the method *implicitly* by Ruby.
+
+This is a key concept: the *context* of the method is all the variables available to it. In the *say_name* method, the *context* (variables) we have available includes `self` *implicitly*.
+
+If we were to write that same functionality out *explicitly* it would look like this:
+
+```rb
+class Dog
+  # rest of class omitted for brevity
+
+  def say_name(_self)
+    puts "woof my name is #{_self.first_name}"
+  end
+end
+
+dog1.say_name(dog1)
+```
+
+But since it's useful to know about the object that the method was called on, Ruby makes it easier for us, and gives us access to that object via `self`.
+
+The rules for `self` in Ruby are simple:
+
+- in an instance method, `self` will be the instance the method was called on
+- in a class method, `self` will be the class the method was called on
+
+It's nice to have this extra context - it makes working with objects easier, because the objects "know" things about themselves, without us having to tell them those things.
+
+Next, let's see how we can use some similar functionality in Javascript to give extra context to our objects.
+
+# Functions vs Methods
+
+Before learning about "classes" in Javascript, let's start with some simple objects. A simple example of creating a Dog object (like our Ruby example) might look like this:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"]
+}
+```
+
+In Javascript, we can give our objects methods directly by assigning a function as the property on an object:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayHello: function() {
+    console.log("Hello")
+  }
+}
+
+dog1.sayHello()
+```
+
+Just like in Ruby, we also get additional *context* passed into the function *implicitly* when we call `sayHello` as a method:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayHello: function() {
+    console.log(this)
+    console.log("Hello")
+  }
+}
+
+dog1.sayHello()
+```
+
+This would be the equivalent of running:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayHello: function(_this) {
+    console.log(_this)
+    console.log("Hello")
+  }
+}
+
+dog1.sayHello(dog1)
+```
+
+But it's better to rely on the *implicit* context, so we can use that to access other properties of the object; this also makes it so our method works the same for other objects:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function() {
+    console.log(`woof my name is ${this.firstName}`)
+  }
+}
+
+const dog2 = {
+  firstName: "Lucy",
+  favSnacks: ["Dog Treats", "Turkey Sandwiches"],
+  sayName: function() {
+    console.log(`woof my name is ${this.firstName}`)
+  }
+}
+
+dog1.sayName()
+dog2.sayName()
+```
+
+So far, so good! Our object is behaving pretty reasonably, much like our Ruby instance, and we can use `this` in a similar way to `self` to get additional information about our object.
+
+So why all the fuss about `this`? Let's a few places when our behavior changes:
+
+- using functions vs methods
+- using **callback functions**
+
+One refactor we can do to DRY up this code is to create the `sayName` function separately to the dog objects and pass a reference to that function to each of them:
+
+```js
+function sayNameFn() {
+  console.log(`woof my name is ${this.firstName}`)
+}
+
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: sayNameFn
+}
+
+const dog2 = {
+  firstName: "Lucy",
+  favSnacks: ["Dog Treats", "Turkey Sandwiches"],
+  sayName: sayNameFn
+}
+
+dog1.sayName()
+dog2.sayName()
+```
+
+> One thing to note: this isn't a pattern we can do in Ruby, because Ruby doesn't give us the ability to pass around references to functions like Javascript does. Remember, functions are **first-class citizens** in Javascript, which means we can pass them around like any other kind of data!
+
+Our code still works the same, but it's now more efficient: we're not duplicating the work of creating multiple functions. But what happens if we try to use the `sayNameFn` without calling it on the dog?
+
+```js
+sayNameFn()
+// => "woof my name is undefined"
+```
+
+Hm, it doesn't break, but why is it printing `undefined`? Let's see what `this` is inside the function:
+
+```js
+function sayNameFn() {
+  console.log(this)
+  console.log(`woof my name is ${this.firstName}`)
+}
+
+sayNameFn()
+// => window
+// => "woof my name is undefined"
+```
+
+Interesting! The difference here is **how** we're calling `sayName`: as a **method** vs as a **function**.
+
+- method: a function called on an object
+- function: a function not called on an object
+
+Let's see another example when functions don't play nicely with the `this` keyword: when we work with **callback functions**, like the callback function used with the `forEach` method:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function() {
+    console.log(`woof my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    this.favSnacks.forEach(function(snack) {
+      console.log(`${this.firstName} likes ${snack}`)
+    })
+  }
+}
+
+dog1.sayFavSnacks()
+// => undefined likes Peanut Butter
+// => undefined likes Soccer Balls
+```
+
+Let's add some more console.logs to see what's happening here:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function() {
+    console.log(`woof my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    console.log("outside callback, this is:", this)
+    this.favSnacks.forEach(function(snack) {
+      console.log("inside callback, this is:", this)
+      console.log(`${this.firstName} likes ${snack}`)
+    })
+  }
+}
+
+dog1.sayFavSnacks()
+// => "outside callback, this is: dog1"
+// => "inside callback, this is: window"
+```
+
+So in essence, the `this` keyword gives us back what we want when we're not in the callback, but when the callback function runs, we no longer have the right *context* and we lose access to the `this` that we want.
+
+To explain more about what's happening, let's talk more about this idea of **Execution Context** and how that comes into play when Javascript is running our code.
+
+# Execution Context
+
+Whenever Javascript is running our code, it runs it in a "Execution Context". The Execution Context refers the 'environment' that our code is running in: it determines what variables (data) we have access to from a given place in our code.
+
+The first Execution Context that gets created in Javascript is the Global Execution Context. This execution context refers to any variables and functions in the global scope.
+
+Without writing any code, we get two "hidden" variables automatically in the Global Execution Context: the global object, and the `this` keyword.
+
+```js
+/*
+  Global Execution Context
+  ---
+  window: global window object
+  this: global window object
+*/
+
+console.log(window)
+console.log(this)
+```
+
+In the Global Execution Context, the value of `this` depends on the environment. If you open up your Chrome Dev Tools and run this code, you'll see `this` refers to the `window` object, which is a special global object in the browser (it's where we get all the built-in browser objects and functions, like `.document` and `.fetch` and `.setTimeout`):
+
+```js
+// refers to the same object
+console.log(window.document === document)
+```
+
+Running the same code in a Node environment will give you a different answer. In your terminal, type 'node' and hit enter; you'll enter a Node REPL. If you enter `this` in the REPL, you'll get the global Node object. Node also doesn't have a `window` object like browsers do - its global object is called `global` instead.
+
+Let's start adding some code and see how that affects our Global Execution Context:
+
+```js
+/*
+  Global Execution Context
+  ---
+  window: global window object
+  this: global window object
+  dogName: "Fezzik"
+  favSnacks: ["Peanut Butter", "Soccer Balls"]
+  sayName: fn reference
+*/
+
+const dogName = "Fezzik"
+const favSnacks = ["Peanut Butter", "Soccer Balls"]
+
+function sayName(greeting) {
+  console.log(`${greeting} my name is ${dogName}`)
+}
+```
+
+So we can see that any variables that are added to our code in the global scope (including function definitions) become part of the Global Execution Context.
+
+Javascript *also* creates a new **Execution Context** any time we *execute* a function:
+
+```js
+const dogName = "Fezzik"
+const favSnacks = ["Peanut Butter", "Soccer Balls"]
+
+function sayName(greeting) {
+  console.log(`${greeting} my name is ${dogName}`)
+}
+
+sayName("woof") // creates an execution context
+```
+
+In this case, calling `sayName` creates a new execution context, so that when Javascript runs the code **inside** the function, it knows what variables are available.
+
+```js
+function sayName(greeting) {
+  /*
+    Function Execution Context
+    ---
+    greeting: "woof"
+    dogName: "Fezzik"
+    this: ???
+  */
+  console.log(`${greeting} my name is ${dogName}`)
+}
+```
+
+The variables we can access in this function's execution context are:
+
+- data passed in as arguments
+- variables declared within the function itself
+- variables available in the outer scope
+- the `this` object
+
+In this example, since we're not calling `sayName` **on** anything (there's nothing left of the dot); `this` will be the global object.
+
+```js
+function sayName(greeting) {
+  /*
+    Function Execution Context
+    ---
+    greeting: "woof"
+    dogName: "Fezzik"
+    this: global object
+  */
+  console.log(`${greeting} my name is ${dogName}`)
+}
+```
+
+> Different rules apply in "strict mode"; if you're running this code in a module, or if you explicitly declare "strict mode" at the top of the file, the global `this` is undefined. Scrimba has "strict mode" enabled, so if you ran a `console.log(this)` in Scrimba, you'd get back `undefined`.
+
+```js
+"use strict"
+function sayName(greeting) {
+  /*
+    Function Execution Context
+    ---
+    greeting: "woof"
+    dogName: "Fezzik"
+    this: undefined
+  */
+  console.log(this)
+}
+```
+
+## `this`: Implicit Binding
+
+Let's go back to our previous example, and see how using a **method** instead of a **function** changes what `this` will be in the Execution Context:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  }
+}
+
+dog1.sayName()
+```
+
+Now that we're calling `sayName()` **on** the `dog1` object, the value of `this` in that execution context will change; we'll get an **implicit** binding to the `dog1`object:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  sayName: function(greeting) {
+    /*
+      Function Execution Context
+      ---
+      greeting: "woof"
+      this: dog1
+    */
+    console.log(`${greeting} my name is ${this.firstName}`)
+  }
+}
+```
+
+So we've learned our first rule of `this`:
+
+> When a method is called on an object, `this` inside the method will refer to the object itself. In order to figure out what `this` refers to, **look to the left of the dot when the method is invoked**.
+
+Let's see if we can use that knowledge to figure out why our callback function from before wasn't behaving as expected.
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    this.favSnacks.forEach(function(snack) {
+      console.log(`${this.firstName} likes ${snack}`)
+    })
+  }
+}
+```
+
+Calling `dog1.sayFavSnacks` will call the function on the dog, and create an Execution Context. We can use our first rule of `this` to see that inside the function, `this` will be `dog1`:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    /*
+      Function Execution Context
+      ---
+      this: dog1
+    */
+    this.favSnacks.forEach(function(snack) {
+      console.log(`${this.firstName} likes ${snack}`)
+    })
+  }
+}
+dog1.sayFavSnacks()
+```
+
+So accessing `this.favSnacks` is not a problem. The issue arises when the callback function for `.forEach` runs.
+
+**Since the callback function being passed into `.forEach` isn't being called on the dog object, this will not be the dog object**.
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    /*
+      Function Execution Context
+      ---
+      this: dog1
+    */
+    this.favSnacks.forEach(
+      function(snack) {
+        /*
+          Function Execution Context
+          ---
+          snack: "Peanut Butter"
+          this: window
+        */
+        console.log(this)
+      }
+    )
+  }
+}
+dog1.sayFavSnacks()
+```
+
+To briefly explain why, we have to think about how the `.forEach` method works - and the same logic will apply to other functions that take in callback functions, so this is important. Imagine we were writing the `forEach` method; it might look like this:
+
+```js
+function forEach(array, callback) {
+  for (let element of array) {
+    callback(element)
+  }
+}
+```
+
+Take note of **how the callback is being invoked**: there's nothing to the left of the dot! So our **implicit binding** doesn't apply here.
+
+So we need to find a way to **explicitly bind** the value of this inside our callback function, so we can keep access to the right `this`.
+
+## Explicit Binding
+
+Javascript gives us 3 methods for **explicitly binding `this`** in a function's Execution Context: `bind`, `call`, and `apply`.
+
+They're all methods that you can call **on a function** to set its `this` value **explicitly**.
+
+Let's see some simple examples of how to use them, and then apply that to our problem of using callbacks.
+
+```js
+const dog = {
+  firstName: "Fezzik"
+}
+
+function whatsThis() {
+  /*
+    Function Execution Context
+    ---
+    this: window
+  */
+  console.log(this)
+}
+
+whatsThis()
+```
+
+If I use `.call` with `whatsThis`, I can **explicitly** set its Execution Context:
+
+```js
+const dog = {
+  firstName: "Fezzik"
+}
+
+function whatsThis() {
+  /*
+    Function Execution Context
+    ---
+    this: dog
+  */
+  console.log(this)
+}
+
+whatsThis.call(dog)
+```
+
+I can also use `apply` in a similar way to **explicitly** set its Execution Context:
+
+```js
+const dog = {
+  firstName: "Fezzik"
+}
+
+function whatsThis() {
+  /*
+    Function Execution Context
+    ---
+    this: dog
+  */
+  console.log(this)
+}
+
+whatsThis.apply(dog)
+```
+
+The only difference is how these methods work with functions that take in multiple arguments:
+
+```js
+const dog = {
+  firstName: "Fezzik"
+}
+
+function whatsThis(arg1, arg2) {
+  /*
+    Function Execution Context
+    ---
+    arg1: "Hello"
+    arg2: "there"
+    this: dog
+  */
+  console.log(this)
+}
+
+whatsThis.call(dog, "Hello", "there")
+whatsThis.apply(dog, ["Hello", "there"])
+```
+
+The other method we can use for explicitly binding context, and the one you'll likely encounter most frequently, is `.bind`. Calling `.bind` on a function will **return a new function definition** that is "bound" to the object passed in when calling `.bind`:
+
+```js
+const dog = {
+  firstName: "Fezzik"
+}
+
+function whatsThis(arg1, arg2) {
+  /*
+    Function Execution Context (boundWhatsThis)
+    ---
+    arg1: "Hello"
+    arg2: "there"
+    this: dog
+  */
+  console.log(this)
+}
+
+const boundWhatsThis = whatsThis.bind(dog)
+boundWhatsThis("Hello", "there")
+```
+
+`whatsThis.bind(dog)` will create a new function, and set the value of `this` in the execution context of that new function to the `dog` object.
+
+Let's see how we can use `.bind` to solve the problem we saw earlier with arrow functions. Back to our example, we want to make sure that `this` inside of the callback function for our `.forEach` method is the same `this` as the outer function:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    /*
+      Function Execution Context
+      ---
+      this: dog1
+    */
+    this.favSnacks.forEach(
+      function(snack) {
+        /*
+          Function Execution Context
+          ---
+          snack: "Peanut Butter"
+          this: window
+        */
+        console.log(this)
+      }
+    )
+  }
+}
+dog1.sayFavSnacks()
+```
+
+An old approach was to create a variable in the outer scope that we can use within the callback, like so:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    /*
+      Function Execution Context
+      ---
+      this: dog1
+      self: dog1
+    */
+    var self = this
+    this.favSnacks.forEach(
+      function(snack) {
+        /*
+          Function Execution Context
+          ---
+          snack: "Peanut Butter"
+          self: dog1
+          this: window
+        */
+        console.log(self)
+      }
+    )
+  }
+}
+dog1.sayFavSnacks()
+```
+
+But now that we know about `.bind`, we've got a better solution:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    /*
+      Function Execution Context
+      ---
+      this: dog1
+    */
+    this.favSnacks.forEach(
+      function(snack) {
+        /*
+          Function Execution Context (explicitly bound function)
+          ---
+          snack: "Peanut Butter"
+          this: dog1
+        */
+        console.log(this)
+      }.bind(this)
+    )
+  }
+}
+dog1.sayFavSnacks()
+```
+
+There's one other approach we can take to working with callbacks that we'll talk about next: **arrow functions**!
+
+## Arrow Functions
+
+So far we've been writing all our functions using the `function` keyword. That's because arrow functions, of course, have their own rules for the `this` keyword:
+
+> Arrow functions will maintain their enclosing execution context when evaluating `this`. In other words, `this` will be **whatever it was in the functions enclosing execution environment**. `this` in arrow functions will be resolved at the point of execution.
+
+One of the reasons that arrow functions have this behavior is because of all the hoops Javascript developers had to jump through to get callback functions working with objects, like we've seen. If we change our callback function to an arrow function, the need for `.bind` goes away!
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: function(greeting) {
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    /*
+      Function Execution Context
+      ---
+      this: dog1
+    */
+    this.favSnacks.forEach(
+      (snack) => {
+        /*
+          Function Execution Context - Arrow Function
+          - `this` is inherited from its enclosing environment
+          - we look up to the outer scope to determine what `this` is
+          ---
+          snack: "Peanut Butter"
+          this: dog1
+        */
+        console.log(this)
+      }
+    )
+  }
+}
+dog1.sayFavSnacks()
+```
+
+> "An arrow function does not have its own `this`; the `this` value of the enclosing _lexical context_ is used i.e. Arrow functions follow the normal variable lookup rules. So while searching for `this` which is not present in current scope they end up finding `this` from its enclosing scope" - [MDN Article on Arrow Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+
+That isn't to say arrow functions should be used for everything; for example, using an arrow function for a method definition is a bad idea:
+
+```js
+const dog1 = {
+  firstName: "Fezzik",
+  favSnacks: ["Peanut Butter", "Soccer Balls"],
+  sayName: (greeting) => {
+    /*
+      Function Execution Context - Arrow Function
+      - `this` is inherited from its enclosing environment
+      - we look up to the outer scope to determine what `this` is
+      ---
+      greeting: "woof"
+      this: window
+    */
+    console.log(`${greeting} my name is ${this.firstName}`)
+  },
+  sayFavSnacks: function() {
+    this.favSnacks.forEach((snack) => {
+      console.log(this)
+    })
+  }
+}
+dog1.sayName("woof")
+```
+
+So, if you want a rule of thumb for arrow functions with objects:
+
+- if it's used as a callback function, use an arrow function
+- if it's used as a method, use a regular function
+
+## The 4 JS environment rules that govern `this`
+
+1.  `this` within a constructor function called with the keyword `new` in front will point to the newly created object:
+
+```javascript
+function Person(name, favColor) {
+  this.name = name
+  this.favColor = favColor
+}
+
+const andy = new Person('andy', 'red')
+andy //Person { name: 'andy', favColor: 'red' }
+typeof andy // "object"
+```
+
+  - Note that **we cannot use the `new` keyword for arrow functions**.
+  - Read this [MDN Article on the `new` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new) if you need a refresher on how `new` works.
+
+---
+
+2. `this` within a function called with `apply/call/bind` will be the object passed as the first parameter:
+
+```javascript
+const personOne = { name: 'andy' }
+const personTwo = { name: 'jon' }
+const personThree = { name: 'garry' }
+
+function sayName(location, time) {
+  return `${this.name} says hello from ${location} at ${time}!`
+}
+
+// call will invoke AND bind the function; args to the function must be comma separated
+
+console.log(sayName.call(personOne, 'Morocco', '3:00PM'))
+// andy says hello from Morocco at 3:00PM!
+
+// apply will invoke AND bind the function; args to the function must be in an array
+console.log(sayName.apply(personTwo, ['New York', '5:00PM']))
+// jon says hello from New York at 5:00PM!
+
+// bind will set the value of this but DOES NOT INVOKE THE FUNCTION
+const boundPersonThree = sayName.bind(personThree)
+console.log(boundPersonThree('Los Angeles', '1:00PM'))
+//garry says hello from Los Angeles at 1:00PM!
+
+console.log(sayName())
+//browser window says hello from undefined at undefined!
+```
+
+---
+
+3.  `this` within a `function` called within a particular context (i.e. `Object.method()`) will be the context/object (**assuming that function was declared with the `function` keyword**):
+
+```javascript
+  const dog = {
+    name: 'winfield',
+    whatIsThis: function() {
+      return this
+    }
+  }
+
+dog.whatIsThis() //dog
+```
+
+---
+
+4.  `this` for a simple function call `fn()` will be the window object (browser) or the global object (Node). If we are in [strict mode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) `this` will be `undefined`. (**There are different rules for arrow functions that will be discussed later**)
+
+```javascript
+function sayThis() {
+  return this
+}
+sayThis() //window
+```
+
+---
+
+
+- Arrow functions will maintain their enclosing execution context when evaluating `this`. In other words, `this` will be **whatever it was in the functions enclosing execution environment**. `this` in arrow functions will be resolved at the point of execution.
+
+- Unlike functions declared with the `function` keyword, arrow functions are much more predictable because arrow functions do not create their own `this` during execution. Instead, they 'absorb' or 'remember' whatever `this` was in their enclosing environment.
+
+- "An arrow function does not have its own `this`; the `this` value of the enclosing _lexical context_ is used i.e. Arrow functions follow the normal variable lookup rules. So while searching for `this` which is not present in current scope they end up finding `this` from its enclosing scope" - [MDN Article on Arrow Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+
+```javascript
+const thisArrow = {
+  sayThis: () => {
+    return this
+  }
+}
+
+thisArrow.sayThis() //window
+
+// remember, no block {} means an implicit return
+const sampleArrow = () => this
+sampleArrow() //window
+
+```
+
+- Please note that we cannot, and should not, use `bind`, `call`, and `apply` on an arrow function. The purpose of these functions is to **fix** the value of `this` to a particular object. Arrow functions will already have `this` fixed to their enclosing lexical scope.
+
+- This makes arrow functions unsuitable for methods defined on an object:
+
+```javascript
+const angryChef = {
+  chefName: 'Chef Gordon Ramsay',
+  cookFood: (foodItem) => {
+    return `${this.chefName} is cooking ${foodItem}`
+  }
+}
+
+angryChef.cookFood('toast') //undefined is cooking toast
+```
+
+---
+
+# Resources
+- [Tyler McGinnis on Execution Context](https://ui.dev/ultimate-guide-to-execution-contexts-hoisting-scopes-and-closures-in-javascript/)
+- [Execution Context Visualizer](https://ui.dev/javascript-visualizer/)
+- [MDN Article on Arrow Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
