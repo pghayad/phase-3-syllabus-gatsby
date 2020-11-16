@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
-import { Global } from '@emotion/core';
-
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { GlobalStyles } from '../styles/GlobalStyles';
+import { Typography } from '../styles/Typography';
 import { lightTheme, darkTheme } from './index';
 import Header from '../Header';
-import { baseStyles } from '../styles/GlobalStyles';
 
 class ThemeProvider extends React.Component {
   state = {
@@ -36,13 +35,14 @@ class ThemeProvider extends React.Component {
 
     return (
       <div>
-        <Global styles={baseStyles} />
+        <Typography />
+        <GlobalStyles theme={currentActiveTheme} />
         <Header
           location={location}
           isDarkThemeActive={isDarkThemeActive}
           toggleActiveTheme={this.toggleActiveTheme}
         />
-        <EmotionThemeProvider theme={currentActiveTheme}>{children}</EmotionThemeProvider>
+        <StyledThemeProvider theme={currentActiveTheme}>{children}</StyledThemeProvider>
       </div>
     );
   }

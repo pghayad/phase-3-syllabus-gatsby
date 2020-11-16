@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import CodeBlock from './codeBlock';
 import AnchorTag from './anchor';
@@ -7,7 +7,7 @@ import YoutubeEmbed from './YoutubeEmbed';
 import YoutubePlaylist from './YoutubePlaylist';
 import Sandbox from '../sandbox';
 
-const StyledPre = styled('pre')`
+const StyledPre = styled.pre`
   border-radius: 6px;
   background: ${props => props.theme.colors.preFormattedText};
 `;

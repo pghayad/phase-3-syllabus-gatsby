@@ -1,7 +1,7 @@
 import React from 'react';
 import Tree from './tree';
 import { StaticQuery, graphql } from 'gatsby';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { ExternalLink } from 'react-feather';
 import config from '../../../config';
 
@@ -45,7 +45,7 @@ const ListItem = styled(({ className, active, level, ...props }) => {
   }
 `;
 
-const Sidebar = styled('aside')`
+const Sidebar = styled.aside`
   width: 100%;
   height: 100vh;
   overflow: auto;

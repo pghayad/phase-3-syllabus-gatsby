@@ -50,7 +50,7 @@ const config = {
     description:
       'Documentation built with mdx. Built from https://github.com/hasura/gatsby-gitbook-boilerplate',
     ogImage: null,
-    docsLocation: 'https://github.com/ihollander/phase-3-syllabus-gatsby/tree/master/content',
+    docsLocation: 'https://github.com/ihollander/phase-3-syllabus-gatsby/tree/main/content',
     favicon:
       'https://instructure-uploads.s3.amazonaws.com/account_158020000000000001/attachments/43718/flatiron-favicon.ico',
   },

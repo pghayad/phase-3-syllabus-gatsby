@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { StaticQuery, graphql } from 'gatsby';
 import Link from './link';
 
@@ -17,7 +17,7 @@ function myFunction() {
   }
 }
 
-const StyledBgDiv = styled('div')`
+const StyledBgDiv = styled.div`
   height: 60px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   background-color: #f8f8f8;

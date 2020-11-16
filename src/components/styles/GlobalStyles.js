@@ -1,8 +1,6 @@
-import { injectGlobal } from 'emotion';
+import { createGlobalStyle } from 'styled-components';
 
-export const baseStyles = injectGlobal`
-  @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
-  @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap');
+export const GlobalStyles = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
@@ -24,10 +22,6 @@ export const baseStyles = injectGlobal`
   }
   html,
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Roboto Light', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif,
-      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-
     font-size: 16px;
     scroll-behavior: smooth;
   }
@@ -40,6 +34,7 @@ export const baseStyles = injectGlobal`
   body {
     font-family: 'Roboto';
   }
+
   .visibleMobile {
     display: none;
   }

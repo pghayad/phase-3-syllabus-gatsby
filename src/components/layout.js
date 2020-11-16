@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { MDXProvider } from '@mdx-js/react';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 

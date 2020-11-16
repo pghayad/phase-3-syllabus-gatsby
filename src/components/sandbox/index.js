@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import Editor from './monaco';
 import useLocalStorage from '../../hooks/useLocalStorage';
@@ -37,7 +37,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const Sandbox = ({ src, starterCode = '// your code here', children }) => {
+const Sandbox = ({ src, starterCode = '// your code here' }) => {
   const [javascript, setJavascript] = useLocalStorage(src, starterCode);
 
   const [runTest, setRunTest] = useState(false);

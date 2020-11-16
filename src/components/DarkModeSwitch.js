@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import NightImage from './images/night.png';
 import DayImage from './images/day.png';
 
-const StyledSwitch = styled('div')`
+const StyledSwitch = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;

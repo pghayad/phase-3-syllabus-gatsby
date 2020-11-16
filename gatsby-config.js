@@ -12,7 +12,7 @@ const plugins = [
       component: require.resolve(`./src/templates/docs.js`),
     },
   },
-  'gatsby-plugin-emotion',
+  'gatsby-plugin-styled-components',
   'gatsby-plugin-react-helmet',
   {
     resolve: 'gatsby-source-filesystem',
