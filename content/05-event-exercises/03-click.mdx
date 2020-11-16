@@ -1,0 +1,84 @@
+---
+title: "Click 3"
+publish: true
+---
+
+# Task
+
+Whenever one of the `<li>` elements inside the `<ul>` is clicked, it should be removed from the page.
+
+There's some starter code for generating the `<li>` elements already!
+
+You can decide to solve this with event delegation or by attaching an event listener to each `<li>` directly.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h3>Great Fruits</h3>
+  <ul id="emoji-list">
+    <!-- fruits go here -->
+  </ul>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/events-03.html" starterCode={`const fruitEmojis = ["🍏", "🍉", "🍍"]
+const emojiList = document.querySelector("#emoji-list")
+fruitEmojis.forEach(function(emoji) {
+  const li = document.createElement("li")
+  li.className = "fruit"
+  li.textContent = emoji
+  emojiList.append(li)
+})
+`} />
+
+# Solution
+
+<details>
+  <summary>Click to show solution using event delegation!</summary>
+
+```javascript
+const fruitEmojis = ["🍏", "🍉", "🍍"]
+const emojiList = document.querySelector("#emoji-list")
+
+fruitEmojis.forEach(function(emoji) {
+  const li = document.createElement("li")
+  li.className = "fruit"
+  li.textContent = emoji
+  emojiList.append(li)
+})
+
+emojiList.addEventListener("click", function(event) {
+  if (event.target.matches("li")) {
+    event.target.remove()
+  }
+})
+```
+
+</details>
+
+<details>
+  <summary>Click to show solution using individual event listeners!</summary>
+
+```javascript
+const fruitEmojis = ["🍏", "🍉", "🍍"]
+const emojiList = document.querySelector("#emoji-list")
+
+fruitEmojis.forEach(function(emoji) {
+  const li = document.createElement("li")
+  li.className = "fruit"
+  li.textContent = emoji
+  li.addEventListener("click", function() {
+    li.remove()
+  })
+  emojiList.append(li)
+})
+```
+
+</details>
+
+# Resources
+
+- [Bubbling and Capturing](https://javascript.info/bubbling-and-capturing)
+- [Event Delegation](https://javascript.info/event-delegation)

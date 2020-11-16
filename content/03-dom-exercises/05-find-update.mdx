@@ -1,0 +1,41 @@
+---
+title: "Find & Update 5"
+publish: true
+---
+
+# Task
+
+Find the `<span>` tag inside the `<button>`. Use Javascript to increment that number by 1, and display it in the span.
+
+Make sure to read the current number of likes from span and convert it to an integer before updating the DOM!
+
+# HTML
+
+```html
+<div class="exercise">
+  <button>
+    Likes: <span class="likes-count">11</span>
+  </button>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-05.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const span = document.querySelector(".likes-count")
+const likes = parseInt(span.textContent) + 1
+span.textContent = likes
+```
+
+</details>
+
+# Resources
+
+- [parseInt() and Number()](https://thisthat.dev/number-constructor-vs-parse-int/)
+- [textContent](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)

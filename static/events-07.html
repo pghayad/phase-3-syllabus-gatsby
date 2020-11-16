@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/8.2.1/mocha.min.js" integrity="sha512-zfubXZH4ikPBZSjDepCk1BrPqZN/QAZ+6SurldYd8s7bmptUUqKf/cyG0PJJ9M5Z7/JlJkpg+qfYg9i9lJYG8w==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js" integrity="sha512-x3BwhuxT44pOQZanacQyDnrB2r1L1AUfjUaefYArTHR9sHEvvy3NSnnm5Z7GAl5YPc3+GEWFT0S34obDSzUvaQ==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chai-spies@1.0.0/chai-spies.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/8.2.1/mocha.min.css" integrity="sha512-6RWs5FczsXwODIZJoL0szz3bXX5W+q/m7bFVQ7HSwZbBXd7PpyYrg2f9Dr4Y2Guqi5k4NJsemxXuiiFoI8fQ4A==" crossorigin="anonymous" />
+
+  <!-- Mocha setup -->
+  <script>
+    mocha.setup({
+      ui: 'bdd',
+      cleanReferencesAfterRun: false
+    });
+  </script>
+  <style>
+    body {
+      background: whitesmoke;
+      margin: 0.5rem;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="mocha" class="hidden">
+  </div>
+
+  <div id="exercise" class="hidden">
+    <style>
+  .high {
+    color: red;
+  }
+  .medium {
+    color: orange;
+  }
+  .low {
+    color: green;
+  }
+</style>
+
+
+<div class="exercise">
+  <h2>Todo List</h2>
+  <input type="text" id="filter" placeholder="Type to filter" />
+
+  <ul id="todo-list">
+    <!-- todos go here -->
+  </ul>
+</div>
+
+<script>
+  const { expect } = chai
+
+  function getFirstVisibleElement(elements) {
+    let found = null;
+    let i = 0;
+    while (i < elements.length && found === null) {
+      if (elements[i].offsetWidth > 0 && elements[i].offsetHeight > 0) {
+        found = elements[i]
+      }
+      i++
+    }
+    return found
+  }
+
+  describe('ul#todo-list', function () {
+    const list = document.querySelector("#todo-list")
+    const filter = document.querySelector("#filter")
+    let changeEvent, inputEvent;
+
+    beforeEach(function() {
+      changeEvent = new Event('change', {
+        bubbles: true,
+        cancelable: true,
+      })
+      inputEvent = new Event('input', {
+        bubbles: true,
+        cancelable: true,
+      })
+    })
+
+    it('should filter the list of inputs to match based on description', function () {
+      filter.value = "sleep"
+      filter.dispatchEvent(inputEvent)
+      filter.dispatchEvent(changeEvent)
+      console.log(list.children)
+      const firstVisibleElement = getFirstVisibleElement(list.children)
+      expect(firstVisibleElement).to.not.equal(null)
+      expect(firstVisibleElement.textContent).to.equal("sleep")
+    });
+
+    it('should filter the list of inputs to match based on description with partial matches', function () {
+      filter.value = "p"
+      filter.dispatchEvent(inputEvent)
+      filter.dispatchEvent(changeEvent)
+      console.log(list.children)
+      const firstVisibleElement = getFirstVisibleElement(list.children)
+      expect(firstVisibleElement).to.not.equal(null)
+      expect(firstVisibleElement.textContent).to.equal("sleep")
+    });
+
+  });
+</script>
+
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+</html>

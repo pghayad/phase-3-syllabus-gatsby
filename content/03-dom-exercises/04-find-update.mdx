@@ -1,0 +1,50 @@
+---
+title: "Find & Update 4"
+publish: true
+---
+
+# Task
+
+Find the `<p>` tag inside the `<div>` with the id of `find-my-child`. Update the `<p>` tag (not the `<div>`) as follows:
+
+- Add a class of `secondary`
+- Change its font color to `red`
+
+# HTML
+
+```html
+<div class="exercise">
+  <div>
+    <p>You can ignore this one</p>
+  </div>
+  <div id="find-my-child">
+    <p>Find me</p>
+  </div>
+  <div>
+    <p>You can ignore me too</p>
+  </div>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-04.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const pTag = document.querySelector("#find-my-child p")
+pTag.style.color = "red"
+pTag.className = "secondary"
+```
+
+</details>
+
+# Resources
+
+- [CSS Selector Reference](https://www.w3schools.com/cssref/css_selectors.asp) (look for descendent or child selector syntax)
+- [className](https://developer.mozilla.org/en-US/docs/Web/API/Element/className)
+- [classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
+- [style](https://developer.mozilla.org/en-US/docs/Web/API/ElementCSSInlineStyle/style)

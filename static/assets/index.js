@@ -1,7 +1,6 @@
 // Mocha runner
 const runTests = () => {
-  document.querySelector('.exercise').style.display = 'none';
-  document.querySelector('#mocha').style.display = 'block';
+  document.querySelector('#mocha').classList.remove('hidden');
   document.querySelector('#mocha').innerHTML = '';
 
   mocha.run(function(failures) {
@@ -11,45 +10,36 @@ const runTests = () => {
   });
 };
 
-const hideTests = () => {
-  document.querySelector('#mocha').style.display = 'none';
-  document.querySelector('.exercise').style.display = 'block';
+const createScript = code => {
+  // TODO: don't eval? lol. Just make sure we're not sending client scripts to other users, k?
+  const script = document.createElement('script');
+
+  script.innerHTML = code;
+  document.body.appendChild(script);
 };
 
-// iframe comms
-window.top.postMessage({ type: 'ready' }, '*');
-
-const reload = () => {
-  window.location.reload();
-};
-
-// TODO: use a safety net here, something to sandbox user script
-const addScript = ({ javascript, runTest }) => {
-  let userScript = document.body.querySelector('#user-script');
-
-  if (userScript) {
-    userScript.remove();
-  }
-
-  userScript = document.createElement('script');
-  userScript.id = 'user-script';
-  userScript.innerHTML = `
-(() => {
-${javascript}
-${runTest ? 'runTests()' : 'hideTests()'}
-})()
-  `;
-  document.body.append(userScript);
+const messageHandler = {
+  reload() {
+    window.location.reload();
+  },
+  run({ javascript, runTest }) {
+    try {
+      createScript(javascript);
+      document.querySelector('#exercise').classList.remove('hidden');
+      if (runTest) {
+        runTests();
+        window.scrollTo(0, 0);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  },
 };
 
 // TODO: check message origin (use an env var to set origins)
-window.addEventListener('message', ({ data }) => {
-  switch (data.type) {
-    case 'code':
-      addScript(data.payload);
-      break;
-    case 'reload':
-      reload();
-      break;
-  }
+window.addEventListener('message', ({ data: { type, payload } }) => {
+  messageHandler[type](payload);
 });
+
+// ready
+window.top.postMessage({ type: 'ready' }, '*');

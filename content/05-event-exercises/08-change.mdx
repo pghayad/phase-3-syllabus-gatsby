@@ -1,0 +1,128 @@
+---
+title: "Bonus - Change"
+publish: true
+---
+
+# Task
+
+This array of todos is being rendered using some code that's written for you below.
+
+```javascript
+const todos = [
+  { priority: 2, description: "code" },
+  { priority: 1, description: "sleep" },
+  { priority: 2, description: "eat" },
+  { priority: 2, description: "drink water" },
+  { priority: 2, description: "netflix binge" },
+  { priority: 3, description: "post memes on slack" },
+]
+```
+
+When the `select#priority` is changed, sort the list of todos to by priority.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h2>Todo List</h2>
+  <select id="sort">
+    <option>Sort by...</option>
+    <option value="low">Low to high</option>
+    <option value="high">High to low</option>
+  </select>
+
+  <ul id="todo-list">
+    <!-- todos go here -->
+  </ul>
+</div>
+```
+
+# Starter Code
+
+Feel free to use this to get started!
+
+```javascript
+const todos = [
+  { priority: 2, description: "code" },
+  { priority: 1, description: "sleep" },
+  { priority: 2, description: "eat" },
+  { priority: 2, description: "drink water" },
+  { priority: 2, description: "netflix binge" },
+  { priority: 3, description: "post memes on slack" },
+]
+
+const todoList = document.querySelector("#todo-list")
+
+function renderTodo(todo) {
+  const li = document.createElement("li")
+  if (todo.priority === 1) {
+    li.className = "high"
+  } else if (todo.priority === 2) {
+    li.className = "medium"
+  } else if (todo.priority === 3) {
+    li.className = "low"
+  }
+  li.textContent = todo.description
+  todoList.append(li)
+}
+
+todos.forEach(renderTodo)
+```
+
+# Code Sandbox
+<Sandbox src="/events-08.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const todos = [
+  { priority: 2, description: "code" },
+  { priority: 1, description: "sleep" },
+  { priority: 2, description: "eat" },
+  { priority: 2, description: "drink water" },
+  { priority: 2, description: "netflix binge" },
+  { priority: 3, description: "post memes on slack" },
+]
+
+const todoList = document.querySelector("#todo-list")
+const sortSelect = document.querySelector("#sort")
+
+sortSelect.addEventListener("change", function(event) {
+  if (event.target.value === "low") {
+    // sort is destructive, so it will sort "in place"
+    todos.sort((a, b) => a.priority - b.priority)
+  } else {
+    todos.sort((a, b) => b.priority - a.priority)
+  }
+
+  // clear old list
+  todoList.innerHTML = ""
+  todos.forEach(renderTodo)
+})
+
+function renderTodo(todo) {
+  const li = document.createElement('li')
+  if (todo.priority === 1) {
+    li.className = "high"
+  } else if (todo.priority === 2) {
+    li.className = "medium"
+  } else if (todo.priority === 3) {
+    li.className = "low"
+  }
+  li.textContent = todo.description
+  document.querySelector("#todo-list").append(li)
+}
+
+todos.forEach(renderTodo)
+```
+
+</details>
+
+# Resources
+
+- [change event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/change_event)
+- [select](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select)
+- [sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)

@@ -1,0 +1,42 @@
+---
+title: "Find & Update 6"
+publish: true
+---
+
+# Task
+
+Find the password field from the form. Get the password value from the input field, and display it in the `<p>` tag with the id of `show-password`.
+
+# HTML
+
+```html
+<div class="exercise">
+  <form id="login-form">
+    <input type="text" id="name" name="name" value="ian" />
+    <input type="password" id="password" name="password" value="123" />
+  </form>
+  <p>Your secret password: </p>
+  <p id="show-password">{show password here}</p>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-06.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const pwInput = document.querySelector("#password")
+const showPw = document.querySelector("#show-password")
+showPw.textContent = pwInput.value
+```
+
+</details>
+
+# Resources
+
+- [input](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
+- [Getting input value](https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-text-input-field-using-javascript.php)

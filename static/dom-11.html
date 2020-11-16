@@ -28,7 +28,30 @@
   </div>
 
   <div id="exercise" class="hidden">
-    <%- body %>
+    <div class="exercise">
+  <!-- your element here -->
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('h2', function () {
+    let h2;
+
+    before(function() {
+      h2 = document.querySelector(".exercise h2")
+    })
+
+    it('should have the id "heading-2"', function () {
+      expect(h2.id).to.equal("heading-2");
+    });
+
+    it('should have the text of "Hand-crafted header"', function () {
+      expect(h2.textContent).to.equal("Hand-crafted header");
+    });
+  });
+</script>
+
   </div>
 
   <script src="./assets/index.js"></script>

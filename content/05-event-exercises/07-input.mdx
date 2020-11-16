@@ -1,0 +1,164 @@
+---
+title: "Bonus - Input"
+publish: true
+---
+
+# Task
+
+This array of todos is being rendered using some code that's written for you below.
+
+```javascript
+const todos = [
+  { priority: 2, description: "code" },
+  { priority: 1, description: "sleep" },
+  { priority: 2, description: "eat" },
+  { priority: 2, description: "drink water" },
+  { priority: 2, description: "netflix binge" },
+  { priority: 3, description: "post memes on slack" },
+]
+```
+
+When new text is typed in the `input#filter`, the list of todos should be filtered to show only todos for which the description matches the text from the input field. As a bonus, try to handle partial matches instead of matching the full text.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h2>Todo List</h2>
+  <input type="text" id="filter" placeholder="Type to filter" />
+
+  <ul id="todo-list">
+    <!-- todos go here -->
+  </ul>
+</div>
+```
+
+# Starter Code
+
+Feel free to use this to get started!
+
+```javascript
+const todos = [
+  { priority: 2, description: "code" },
+  { priority: 1, description: "sleep" },
+  { priority: 2, description: "eat" },
+  { priority: 2, description: "drink water" },
+  { priority: 2, description: "netflix binge" },
+  { priority: 3, description: "post memes on slack" },
+]
+
+const todoList = document.querySelector("#todo-list")
+
+function renderTodo(todo) {
+  const li = document.createElement("li")
+  if (todo.priority === 1) {
+    li.className = "high"
+  } else if (todo.priority === 2) {
+    li.className = "medium"
+  } else if (todo.priority === 3) {
+    li.className = "low"
+  }
+  li.textContent = todo.description
+  todoList.append(li)
+}
+
+todos.forEach(renderTodo)
+```
+
+# Code Sandbox
+<Sandbox src="/events-07.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const todos = [
+  { priority: 2, description: "code" },
+  { priority: 1, description: "sleep" },
+  { priority: 2, description: "eat" },
+  { priority: 2, description: "drink water" },
+  { priority: 2, description: "netflix binge" },
+  { priority: 3, description: "post memes on slack" },
+]
+
+const todoList = document.querySelector("#todo-list")
+const filterInput = document.querySelector("#filter")
+
+filterInput.addEventListener("input", function(event) {
+  const filteredTodos = todos.filter(todo => todo.description.includes(filterInput.value))
+
+  // clear old list
+  todoList.innerHTML = ""
+  filteredTodos.forEach(renderTodo)
+})
+
+function renderTodo(todo) {
+  const li = document.createElement('li')
+  if (todo.priority === 1) {
+    li.className = "high"
+  } else if (todo.priority === 2) {
+    li.className = "medium"
+  } else if (todo.priority === 3) {
+    li.className = "low"
+  }
+  li.textContent = todo.description
+  document.querySelector("#todo-list").append(li)
+}
+
+todos.forEach(renderTodo)
+```
+
+</details>
+
+
+<details>
+  <summary>Click to show another solution!</summary>
+
+```javascript
+const todos = [
+  { priority: 2, description: "code" },
+  { priority: 1, description: "sleep" },
+  { priority: 2, description: "eat" },
+  { priority: 2, description: "drink water" },
+  { priority: 2, description: "netflix binge" },
+  { priority: 3, description: "post memes on slack" },
+]
+
+const todoList = document.querySelector("#todo-list")
+const filterInput = document.querySelector("#filter")
+
+filterInput.addEventListener("input", function(event) {
+  todoList.querySelectorAll("li").forEach(function(li) {
+    if (li.textContent.includes(filterInput.value)) {
+      li.style.display = null
+    } else {
+      li.style.display = "none"
+    }
+  })
+})
+
+function renderTodo(todo) {
+  const li = document.createElement('li')
+  if (todo.priority === 1) {
+    li.className = "high"
+  } else if (todo.priority === 2) {
+    li.className = "medium"
+  } else if (todo.priority === 3) {
+    li.className = "low"
+  }
+  li.textContent = todo.description
+  document.querySelector("#todo-list").append(li)
+}
+
+todos.forEach(renderTodo)
+```
+
+</details>
+
+# Resources
+
+- [input event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event)
+- [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+- [includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes)

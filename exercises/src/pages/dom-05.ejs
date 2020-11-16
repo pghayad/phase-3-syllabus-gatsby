@@ -1,0 +1,17 @@
+<div class="exercise">
+  <button>
+    Likes: <span class="likes-count">11</span>
+  </button>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('span.likes-count', function () {
+    const element = document.querySelector(".likes-count")
+
+    it('should have the updated number of likes', function () {
+      expect(element.textContent).to.equal("12");
+    });
+  });
+</script>

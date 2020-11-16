@@ -1,0 +1,15 @@
+<div class="exercise">
+  <h3>Now you see me...</h3>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('div.exercise', function () {
+    const exercise = document.querySelector(".exercise")
+
+    it('should have no child elements left', function () {
+      expect(exercise.children.length).to.equal(0);
+    });
+  });
+</script>

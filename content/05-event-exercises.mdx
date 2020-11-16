@@ -1,0 +1,48 @@
+---
+title: "Event Exercises"
+publish: true
+---
+
+Here are some short exercises to practice event handling! Try this one out, then click 'Next' at the bottom to try some more.
+
+# Task
+
+Find the `<button>` tag and add an event listener for a 'click' event. When the button is clicked, change the `textContent` of the button to something new.
+
+# HTML
+
+```html
+<div class="exercise">
+  <button>Listen to me!</button>
+</div>
+```
+
+# Code Sandbox
+<Sandbox
+  src="/events-00.html"
+  starterCode={`const button = document.querySelector("button")
+button.addEventListener("click", function() {
+  button.textContent = "Changed!"
+})
+  `}
+/>
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const button = document.querySelector("button")
+button.addEventListener("click", function() {
+  button.textContent = "Changed!"
+})
+```
+
+</details>
+
+# Resources
+
+- [Browser events](https://javascript.info/introduction-browser-events#addeventlistener)
+- [W3 Schools addEventListener](https://www.w3schools.com/jsref/met_document_addeventlistener.asp)
+- [MDN addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)

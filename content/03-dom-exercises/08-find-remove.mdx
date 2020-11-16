@@ -1,0 +1,36 @@
+---
+title: "Remove 1"
+publish: true
+---
+
+# Task
+
+Find the `<h3>` tag and remove it from the page.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h3>Now you see me...</h3>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-08.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const h3 = document.querySelector("h3")
+h3.remove()
+```
+
+</details>
+
+# Resources
+
+- [remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+- [removeChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild)

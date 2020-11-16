@@ -1,0 +1,204 @@
+---
+title: "Create 3"
+publish: true
+---
+
+# Task
+
+Given this array of players:
+
+```js
+const players = [
+  {
+    number: 11,
+    name: "Mo Salah",
+    nickname: "The Egyptian King",
+    photo: "https://cdn.cnn.com/cnnnext/dam/assets/190501145802-mo-salah-exlarge-169.jpg"
+  },
+  {
+    number: 9,
+    name: "Roberto Firmino",
+    nickname: "Bobby Chompers",
+    photo: "https://vignette.wikia.nocookie.net/liverpoolfc/images/f/f3/RFirmino2019.jpeg/revision/latest/scale-to-width-down/340?cb=20190807042207"
+  },
+  {
+    number: 66,
+    name: "Trent Alexander-Arnold",
+    nickname: "Young Trent",
+    photo: "https://resources.premierleague.com/photos/premierleague/photo/2019/12/26/f04875d3-a35d-4555-8e15-762bc8fcb5ea/1196090853.jpg?width=897&height=620"
+  },
+  {
+    number: 14,
+    name: "Jordan Henderson",
+    nickname: "Hendo",
+    photo: "https://icdn.empireofthekop.com/wp-content/uploads/2020/03/Jordan-Henderson-640x426.jpg"
+  }
+]
+```
+
+Create a new `<dig>` tag in this format for each player:
+
+```html
+<div class="player" data-number="{player number}">
+  <h2>{player name}</h2>
+  <h4>{player nickname}</h4>
+  <img src="https://via.placeholder.com/300" alt="{player name}" />
+</div>
+```
+
+And insert each `<div>` tag inside the `div.player-container`.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h1>Players</h1>
+  <div class="player-container">
+    <!-- players go here -->
+  </div>
+</div>
+```
+
+# Code Sandbox
+<Sandbox
+  src="/dom-13.html"
+  starterCode={`const players = [
+  {
+    number: 11,
+    name: "Mo Salah",
+    nickname: "The Egyptian King",
+    photo: "https://cdn.cnn.com/cnnnext/dam/assets/190501145802-mo-salah-exlarge-169.jpg"
+  },
+  {
+    number: 9,
+    name: "Roberto Firmino",
+    nickname: "Bobby Chompers",
+    photo: "https://vignette.wikia.nocookie.net/liverpoolfc/images/f/f3/RFirmino2019.jpeg/revision/latest/scale-to-width-down/340?cb=20190807042207"
+  },
+  {
+    number: 66,
+    name: "Trent Alexander-Arnold",
+    nickname: "Young Trent",
+    photo: "https://resources.premierleague.com/photos/premierleague/photo/2019/12/26/f04875d3-a35d-4555-8e15-762bc8fcb5ea/1196090853.jpg?width=897&height=620"
+  },
+  {
+    number: 14,
+    name: "Jordan Henderson",
+    nickname: "Hendo",
+    photo: "https://icdn.empireofthekop.com/wp-content/uploads/2020/03/Jordan-Henderson-640x426.jpg"
+  }
+]`}
+/>
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const players = [
+  {
+    number: 11,
+    name: "Mo Salah",
+    nickname: "The Egyptian King",
+    photo: "https://cdn.cnn.com/cnnnext/dam/assets/190501145802-mo-salah-exlarge-169.jpg"
+  },
+  {
+    number: 9,
+    name: "Roberto Firmino",
+    nickname: "Bobby Chompers",
+    photo: "https://vignette.wikia.nocookie.net/liverpoolfc/images/f/f3/RFirmino2019.jpeg/revision/latest/scale-to-width-down/340?cb=20190807042207"
+  },
+  {
+    number: 66,
+    name: "Trent Alexander-Arnold",
+    nickname: "Young Trent",
+    photo: "https://resources.premierleague.com/photos/premierleague/photo/2019/12/26/f04875d3-a35d-4555-8e15-762bc8fcb5ea/1196090853.jpg?width=897&height=620"
+  },
+  {
+    number: 14,
+    name: "Jordan Henderson",
+    nickname: "Hendo",
+    photo: "https://icdn.empireofthekop.com/wp-content/uploads/2020/03/Jordan-Henderson-640x426.jpg"
+  }
+]
+
+const playerContainer = document.querySelector(".player-container")
+
+players.forEach(function(player) {
+  const playerDiv = document.createElement("div")
+  playerDiv.className = "player"
+  playerDiv.dataset.number = player.number
+  playerDiv.innerHTML = `
+  <h2>${player.name}</h2>
+  <h4>${player.nickname}</h4>
+  <img src="${player.photo}" alt="${player.name}" />
+  `
+  playerContainer.append(playerDiv)
+})
+```
+
+</details>
+
+
+<details>
+  <summary>Click to show another solution!</summary>
+
+```javascript
+const players = [
+  {
+    number: 11,
+    name: "Mo Salah",
+    nickname: "The Egyptian King",
+    photo: "https://cdn.cnn.com/cnnnext/dam/assets/190501145802-mo-salah-exlarge-169.jpg"
+  },
+  {
+    number: 9,
+    name: "Roberto Firmino",
+    nickname: "Bobby Chompers",
+    photo: "https://vignette.wikia.nocookie.net/liverpoolfc/images/f/f3/RFirmino2019.jpeg/revision/latest/scale-to-width-down/340?cb=20190807042207"
+  },
+  {
+    number: 66,
+    name: "Trent Alexander-Arnold",
+    nickname: "Young Trent",
+    photo: "https://resources.premierleague.com/photos/premierleague/photo/2019/12/26/f04875d3-a35d-4555-8e15-762bc8fcb5ea/1196090853.jpg?width=897&height=620"
+  },
+  {
+    number: 14,
+    name: "Jordan Henderson",
+    nickname: "Hendo",
+    photo: "https://icdn.empireofthekop.com/wp-content/uploads/2020/03/Jordan-Henderson-640x426.jpg"
+  }
+]
+
+const playerContainer = document.querySelector(".player-container")
+
+players.forEach(function(player) {
+  const playerDiv = document.createElement("div")
+  playerDiv.className = "player"
+  playerDiv.dataset.number = player.number
+
+  const h2 = document.createElement("h2")
+  h2.textContent = player.name
+
+  const h4 = document.createElement("h4")
+  h4.textContent = player.nickname
+
+  const img = document.createElement("img")
+  img.src = player.photo
+  img.alt = player.name
+
+  playerDiv.append(h2, h4, img)
+
+  playerContainer.append(playerDiv)
+})
+```
+
+</details>
+
+# Resources
+
+- [createElement](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement)
+- [forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+- [append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)

@@ -3,15 +3,13 @@ title: "DOM Exercises"
 publish: true
 ---
 
-Here are some short exercises to practice DOM manipulation!
+Here are some short exercises to practice DOM Manipulation! Try this one out, then click 'Next' at the bottom to try some more.
 
-The exercises are set up like this. You'll have a Task, like this:
+# Task
 
-```
 Find the `<p>` tag and change its text to say `I updated it!`
-```
 
-Then some sample of what the HTML looks like:
+# HTML
 
 ```html
 <div class="exercise">
@@ -19,20 +17,22 @@ Then some sample of what the HTML looks like:
 </div>
 ```
 
-And a Code Sandbox that shows you the HTML, along with a live code editor to try out.
+In the Code Sandbox below, you can see what the HTML looks like along with a live code editor to try out your code.
+
+You can use `console.log` in the sandbox too, so you can check your console and inspect your variables.
+
+If you're stuck, you can also view the solution and some extra resources below.
 
 Give this exercise a shot! Try writing some code in the editor below. Click the **Run Code** button to run your code in the sandbox. Click the **Run Test** button to see if your code passes the test.
+
+# Code Sandbox
 
 <Sandbox
   starterCode={`const p = document.querySelector("p")
 console.log(p)
   `}
-  html="/dom-exercise-00.html"
+  src="/dom-00.html"
 />
-
-You can use `console.log` in the sandbox too, so you can check your console and inspect your variables.
-
-If you're stuck, you can also view the solution and some extra resources below.
 
 # Solution
 
@@ -52,4 +52,3 @@ p.textContent = "I updated it!"
 - [CSS Selector Reference](https://www.w3schools.com/cssref/css_selectors.asp)
 - [textContent](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
 
-When you're done, click Next below to try out some more exercises!

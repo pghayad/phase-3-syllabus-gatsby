@@ -28,7 +28,24 @@
   </div>
 
   <div id="exercise" class="hidden">
-    <%- body %>
+    <div class="exercise">
+  <button>Listen to me!</button>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('button', function () {
+    it('should change text when clicked', function () {
+      let button = document.querySelector('.exercise button')
+      let currentText = button.textContent
+      button.click()
+
+      expect(button.textContent).to.not.equal(currentText)
+    })
+  })
+</script>
+
   </div>
 
   <script src="./assets/index.js"></script>

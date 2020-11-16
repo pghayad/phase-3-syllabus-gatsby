@@ -1,0 +1,78 @@
+---
+title: "Fetch Exercises"
+publish: true
+---
+
+Here are some short exercises to practice working with `fetch`! Try this one out, then click 'Next' at the bottom to try some more.
+
+**NOTE**: For the tests to run, you'll need to wrap your `fetch` in the function provided by the starter code. You'll also need to make sure these functions **return** a Promise. Your code will end up looking like this:
+
+```javascript
+const getData = () => {
+  return fetch("https://myurl.com")
+    .then(r => r.json())
+    .then(data => doSomethingWith(data))
+}
+
+getData()
+```
+
+# Task
+
+Make a `GET` request to `https://randomfox.ca/floof/` and use the response to show an image in the `<img>` tag.
+
+# HTML
+
+```html
+<div class="exercise">
+  <div class="image-holder">
+    <h3>Look at this cute fox</h3>
+    <img src="https://via.placeholder.com/300" alt="A random fox" />
+  </div>
+</div>
+```
+
+# Starter Code
+
+```javascript
+const getFox = () => {
+  return fetch("https://randomfox.ca/floof/")
+    .then(r => r.json())
+    .then(imageData => {
+      console.log(imageData)
+    })
+}
+
+getFox()
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-00.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const getFox = () => {
+  return fetch("https://randomfox.ca/floof/")
+    .then(r => r.json())
+    .then(imageData => {
+      renderImage(imageData)
+    })
+}
+
+const renderImage = imageData => {
+  const img = document.querySelector("img")
+  img.src = imageData.image
+}
+
+getFox()
+```
+
+</details>
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

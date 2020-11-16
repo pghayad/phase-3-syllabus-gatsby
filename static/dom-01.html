@@ -28,7 +28,22 @@
   </div>
 
   <div id="exercise" class="hidden">
-    <%- body %>
+    <div class="exercise">
+  <h3>Change My Text</h3>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('h3', function () {
+    const h3 = document.querySelector("h3")
+
+    it('should have the text "Hello!"', function () {
+      expect(h3.textContent).to.equal("Hello!");
+    });
+  });
+</script>
+
   </div>
 
   <script src="./assets/index.js"></script>

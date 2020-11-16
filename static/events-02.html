@@ -28,7 +28,36 @@
   </div>
 
   <div id="exercise" class="hidden">
-    <%- body %>
+    <div class="exercise">
+  <button>
+    Likes: <span class="likes-count">11</span>
+  </button>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('span.likes-count', function () {
+    const likes = document.querySelector(".likes-count")
+    const button = document.querySelector(".exercise button")
+
+    beforeEach(function() {
+      likes.textContent = "11"
+    })
+
+    it('should increment the likes by 1 when clicked once', function () {
+      button.click()
+      expect(likes.textContent).to.equal("12")
+    })
+
+    it('should increment the likes by 2 when clicked twice', function () {
+      button.click()
+      button.click()
+      expect(likes.textContent).to.equal("13")
+    })
+  })
+</script>
+
   </div>
 
   <script src="./assets/index.js"></script>

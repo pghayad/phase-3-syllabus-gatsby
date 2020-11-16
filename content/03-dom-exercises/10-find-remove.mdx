@@ -1,0 +1,55 @@
+---
+title: "Remove 3"
+publish: true
+---
+
+# Task
+
+Find the `<ul>` tag with the class of `clear-me` remove all its child elements. Don't remove the `<ul>`, only the `<li>` elements inside it!
+
+# HTML
+
+```html
+<div class="exercise">
+  <ul class="clear-me">
+    <li>pls delete</li>
+    <li>remove me too</li>
+    <li>no longer want</li>
+  </li>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-10.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const ul = document.querySelector(".clear-me")
+ul.innerHTML = ""
+```
+
+</details>
+
+
+<details>
+  <summary>Click to show another solution!</summary>
+
+```javascript
+const ul = document.querySelector(".clear-me")
+while(ul.firstChild) {
+  ul.firstChild.remove()
+}
+```
+
+</details>
+
+# Resources
+
+- [remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+- [removeChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild)
+- [StackOverflow remove all child nodes](https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript)
+- [benchmark innerHTML vs remove](https://www.measurethat.net/Benchmarks/Show/6910/0/innerhtml-vs-removechild-vs-remove)

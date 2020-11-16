@@ -14,8 +14,6 @@ const YoutubePlaylist = ({ playlistId }) => {
 
   const externalLink = `https://www.youtube.com/playlist?list=${playlistId}`;
 
-  console.log(data);
-
   return (
     <>
       <YoutubeEmbed link={embedLink} />

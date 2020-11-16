@@ -1,0 +1,38 @@
+---
+title: "Remove 2"
+publish: true
+---
+
+# Task
+
+Find the `<p>` tag with the id of `find-me` remove it. Make sure not to remove any other elements!
+
+# HTML
+
+```html
+<div class="exercise">
+  <p>You can ignore this one</p>
+  <p id="find-me">Find me</p>
+  <p>You can ignore me too</p>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-09.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const pTag = document.querySelector("#find-me")
+pTag.remove()
+```
+
+</details>
+
+# Resources
+
+- [remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+- [removeChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild)

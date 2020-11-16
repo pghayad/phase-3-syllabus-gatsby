@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Highlight, { defaultProps } from 'prism-react-renderer';
 import prismTheme from 'prism-react-renderer/themes/vsDark';
-import Loadable from 'react-loadable';
-import LoadingProvider from './loading';
+
+import loadable from '@loadable/component';
 
 /** Removes the last token from a code example if it's empty. */
 function cleanTokens(tokens) {
@@ -19,18 +19,17 @@ function cleanTokens(tokens) {
   return tokens;
 }
 
-const LoadableComponent = Loadable({
-  loader: () => import('./LiveProvider'),
-  loading: LoadingProvider,
-});
+const LoadableComponent = loadable.lib(() => import('./LiveProvider'));
 
 /* eslint-disable react/jsx-key */
 const CodeBlock = ({ children: exampleCode, ...props }) => {
   if (props['react-live']) {
     return <LoadableComponent code={exampleCode} />;
   } else {
+    const language = props.className?.split('-')[1] || 'javascript';
+
     return (
-      <Highlight {...defaultProps} code={exampleCode} language="javascript" theme={prismTheme}>
+      <Highlight {...defaultProps} code={exampleCode} language={language} theme={prismTheme}>
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre className={className + ' pre'} style={style} p={3}>
             {cleanTokens(tokens).map((line, i) => {

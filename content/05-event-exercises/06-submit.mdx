@@ -1,0 +1,82 @@
+---
+title: "Submit 3"
+publish: true
+---
+
+# Task
+
+When the `form#new-player` is submitted, create a new `<dig>` tag in this format for each player:
+
+```html
+<div class="player" data-number="{player number}">
+  <h2>{player name}</h2>
+  <h4>{player nickname}</h4>
+  <img src="https://via.placeholder.com/300" alt="{player name}" />
+</div>
+```
+
+And insert your `<div>` tag inside the `div.player-container`.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h3>Add Player</h3>
+  <form id="new-player">
+    <input type="text" name="name" placeholder="Name" />
+    <input type="number" name="number" placeholder="Number" />
+    <input type="text" name="photo" placeholder="Photo URL" />
+    <textarea name="nickname" placeholder="Nickname"></textarea>
+    <input type="submit" value="Add Player" />
+  </form>
+  <h3>Players</h3>
+  <div class="player-container">
+    <!-- players go here -->
+  </div>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/events-06.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const playerContainer = document.querySelector(".player-container")
+const playerForm = document.querySelector("#new-player")
+
+playerForm.addEventListener("submit", function(event) {
+  event.preventDefault()
+
+  const playerObj = {
+    name: event.target.name.value,
+    number: event.target.number.value,
+    photo: event.target.photo.value,
+    nickname: event.target.nickname.value
+  }
+
+  renderPlayer(playerObj)
+})
+
+function renderPlayer(player) {
+  const playerDiv = document.createElement("div")
+  playerDiv.className = "player"
+  playerDiv.dataset.number = player.number
+  playerDiv.innerHTML = `
+  <h2>${player.name}</h2>
+  <h4>${player.nickname}</h4>
+  <img src="${player.photo}" alt="${player.name}" />
+  `
+  playerContainer.append(playerDiv)
+}
+```
+
+</details>
+
+# Resources
+
+- [createElement](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement)
+- [append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)

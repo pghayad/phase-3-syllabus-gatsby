@@ -1,0 +1,53 @@
+---
+title: "Submit 1"
+publish: true
+---
+
+# Task
+
+When the `#login-form` submits, get the password value from the input field and display it in the `<p>` tag with the id of `show-password`.
+
+**Note**: If you see the page 'refresh' when you submit the form, remember to add some code in your event handler to *prevent* the *default* behavior of a form being submitted!
+
+# HTML
+
+```html
+<div class="exercise">
+  <form id="login-form">
+    <input type="text" id="name" name="name" />
+    <input type="password" id="password" name="password" />
+    <input type="submit" value="Login" />
+  </form>
+  <p>Your secret password: </p>
+  <p id="show-password">{show password here}</p>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/events-04.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const form = document.querySelector("#login-form")
+
+form.addEventListener("submit", handleSubmit)
+
+function handleSubmit(event) {
+  event.preventDefault()
+  const pwInput = document.querySelector("#password")
+  const showPw = document.querySelector("#show-password")
+  showPw.textContent = pwInput.value
+}
+```
+
+</details>
+
+# Resources
+
+- [input](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
+- [Getting input value](https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-text-input-field-using-javascript.php)
+- [Preventing default event behavior](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault)

@@ -1,0 +1,37 @@
+---
+title: "Find & Update 1"
+publish: true
+---
+
+# Task
+
+Find the `<h3>` tag and change its text to say `Hello!`
+
+# HTML
+
+```html
+<div class="exercise">
+  <h3>Change My Text</h3>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-01.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const h3 = document.querySelector("h3")
+h3.textContent = "Hello!"
+```
+
+</details>
+
+# Resources
+
+- [querySelector](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector)
+- [CSS Selector Reference](https://www.w3schools.com/cssref/css_selectors.asp)
+- [textContent](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)

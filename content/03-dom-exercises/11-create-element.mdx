@@ -1,0 +1,44 @@
+---
+title: "Create 1"
+publish: true
+---
+
+# Task
+
+Use Javascript to create an element that looks like this:
+
+```html
+<h2 id="heading-2">Hand-crafted header</h2>
+```
+
+And insert it inside the `div.exercise`.
+
+# HTML
+
+```html
+<div class="exercise">
+  <!-- your element here -->
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-11.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const h2 = document.createElement("h2")
+h2.id = "heading-2"
+h2.textContent = "Hand-crafted header"
+const parent = document.querySelector(".exercise")
+parent.append(h2)
+```
+
+</details>
+
+# Resources
+
+- [createElement](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement)

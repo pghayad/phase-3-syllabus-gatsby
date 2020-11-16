@@ -2,30 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { StaticQuery, graphql } from 'gatsby';
 import Link from './link';
-import Loadable from 'react-loadable';
 
-import config from '../../config.js';
-import LoadingProvider from './mdxComponents/loading';
 import { DarkModeSwitch } from './DarkModeSwitch';
 
-const isSearchEnabled = config.header.search && config.header.search.enabled ? true : false;
-
-let searchIndices = [];
-
-if (isSearchEnabled && config.header.search.indexName) {
-  searchIndices.push({
-    name: `${config.header.search.indexName}`,
-    title: `Results`,
-    hitComp: `PageHit`,
-  });
-}
-
 import Sidebar from './sidebar';
-
-const LoadableComponent = Loadable({
-  loader: () => import('./search/index'),
-  loading: LoadingProvider,
-});
 
 function myFunction() {
   var x = document.getElementById('navbar');
@@ -70,11 +50,11 @@ const Header = ({ location, isDarkThemeActive, toggleActiveTheme }) => (
 
       const {
         site: {
-          siteMetadata: { headerTitle, logo },
+          siteMetadata: { logo },
         },
       } = data;
 
-      const finalLogoLink = logo.link !== '' ? logo.link : 'https://hasura.io/';
+      const finalLogoLink = logo.link !== '' ? logo.link : 'https://learning.flatironschool.com/';
 
       return (
         <div className={'navBarWrapper'}>
@@ -88,11 +68,6 @@ const Header = ({ location, isDarkThemeActive, toggleActiveTheme }) => (
                 />
               </Link>
             </div>
-            {isSearchEnabled ? (
-              <div className={'searchWrapper hiddenMobile navBarUL'}>
-                <LoadableComponent collapse={true} indices={searchIndices} />
-              </div>
-            ) : null}
             <div id="navbar" className={'topnav'}>
               <div className={'visibleMobile'}>
                 <Sidebar location={location} />
@@ -122,11 +97,6 @@ const Header = ({ location, isDarkThemeActive, toggleActiveTheme }) => (
                 <span className={'iconBar'}></span>
               </span>
             </div>
-            {isSearchEnabled ? (
-              <div className={'searchWrapper'}>
-                <LoadableComponent collapse={true} indices={searchIndices} />
-              </div>
-            ) : null}
           </StyledBgDiv>
         </div>
       );

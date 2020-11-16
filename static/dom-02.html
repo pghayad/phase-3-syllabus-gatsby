@@ -28,7 +28,29 @@
   </div>
 
   <div id="exercise" class="hidden">
-    <%- body %>
+    <div class="exercise">
+  <div class="image-holder">
+    <h3>Look at this cute fox</h3>
+    <img src="https://via.placeholder.com/300" alt="No fox yet :(" />
+  </div>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('img', function () {
+    const img = document.querySelector("img")
+
+    it('should have the src "https://randomfox.ca/images/25.jpg"', function () {
+      expect(img.src).to.equal("https://randomfox.ca/images/25.jpg");
+    });
+
+    it('should have an alt property of "A random cute fox"', function () {
+      expect(img.alt).to.equal("A random cute fox");
+    });
+  });
+</script>
+
   </div>
 
   <script src="./assets/index.js"></script>

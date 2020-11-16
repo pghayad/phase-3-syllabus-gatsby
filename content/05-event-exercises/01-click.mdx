@@ -1,0 +1,43 @@
+---
+title: "Click 1"
+publish: true
+---
+
+# Task
+
+Find the `<button>` tag and add an event listener for a 'click' event. When the button is clicked, toggle the class of `dark-mode` on and off on the `div.exercise` element.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h1>Hello!</h1>
+  <p>Here's some text</p>
+  <button>Toggle Dark Mode</button>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/events-01.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const exercise = document.querySelector(".exercise")
+const button = exercise.querySelector("button")
+button.addEventListener("click", function() {
+  exercise.classList.toggle("dark-mode")
+})
+```
+
+</details>
+
+# Resources
+
+- [classList toggle](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
+- [Browser events](https://javascript.info/introduction-browser-events#addeventlistener)
+- [W3 Schools addEventListener](https://www.w3schools.com/jsref/met_document_addeventlistener.asp)
+- [MDN addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)

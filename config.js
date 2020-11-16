@@ -29,10 +29,13 @@ const config = {
       '/02-dom-manipulation',
       '/03-dom-exercises',
       '/04-event-handling',
-      '/05-fetch-basics',
-      '/06-fetch-crud',
-      '/07-rails-as-an-api',
-      '/08-modern-javascript',
+      '/05-event-exercises',
+      '/06-fetch-basics',
+      '/07-fetch-crud',
+      '/08-fetch-exercises',
+      '/09-rails-as-an-api',
+      '/10-modern-javascript',
+      '/11-oojs',
     ],
     openNav: [
       '/00-intro', // add trailing slash if enabled above

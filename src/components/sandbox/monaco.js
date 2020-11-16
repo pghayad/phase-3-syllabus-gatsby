@@ -4,29 +4,12 @@ import { useMonaco } from './context';
 
 const StyledContainer = styled.div`
   width: 100%;
-  height: 200px;
+  height: 250px;
   border: none;
   margin-bottom: 1rem;
   border: 2px solid black;
-`;
-
-const StyledButton = styled.button`
-  margin: 1rem;
-  padding: 1rem;
-  cursor: pointer;
-  border-radius: 3px;
-  border: 1px solid rgb(230, 236, 241);
-  transition: border 200ms ease 0s;
-  box-shadow: rgba(116, 129, 141, 0.1) 0px 3px 8px 0px;
-  text-decoration: none;
-
-  background-color: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.text};
-
-  &:hover {
-    text-decoration: none;
-    border: 1px solid #1ed3c6;
-  }
+  resize: vertical;
+  overflow: auto;
 `;
 
 const options = {
@@ -43,14 +26,14 @@ const options = {
   colorDecorators: false,
 };
 
-const MonacoEditor = ({ value, onRunCode = () => {} }) => {
+// eslint-disable-next-line react/display-name
+const MonacoEditor = React.forwardRef(({ value }, editorRef) => {
   const monaco = useMonaco();
 
   const elementRef = useRef();
 
-  const editorRef = useRef();
+  const containerRef = useRef();
 
-  // resize with window
   useEffect(() => {
     const handleResize = () => {
       if (editorRef.current) {
@@ -58,9 +41,22 @@ const MonacoEditor = ({ value, onRunCode = () => {} }) => {
       }
     };
 
+    // resize with element
+    let observer;
+
+    if (containerRef.current) {
+      observer = new ResizeObserver(handleResize).observe(containerRef.current);
+    }
+
+    // resize with window
     window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (observer) {
+        observer.disconnect();
+      }
+    };
   }, []);
 
   // TODO: dispose editor and subscriptions
@@ -72,31 +68,14 @@ const MonacoEditor = ({ value, onRunCode = () => {} }) => {
       const model = monaco.editor.createModel(value, 'javascript');
 
       editorRef.current.setModel(model);
-      onRunCode({ code: value, runTest: false });
     }
-  }, [monaco.editor, value, onRunCode]);
-
-  const handleCodeClick = () => {
-    const model = editorRef.current.getModel();
-
-    onRunCode({ code: model.getValue(), runTest: false });
-  };
-
-  const handleTestClick = () => {
-    const model = editorRef.current.getModel();
-
-    onRunCode({ code: model.getValue(), runTest: true });
-  };
+  }, [monaco.editor, value]);
 
   return (
-    <>
-      <StyledContainer ref={elementRef} />
-      <div>
-        <StyledButton onClick={handleCodeClick}>Run Code</StyledButton>
-        <StyledButton onClick={handleTestClick}>Run Test</StyledButton>
-      </div>
-    </>
+    <StyledContainer ref={containerRef}>
+      <div ref={elementRef} style={{ height: '100%', width: '100%' }} />
+    </StyledContainer>
   );
-};
+});
 
 export default MonacoEditor;

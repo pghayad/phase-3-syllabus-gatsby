@@ -1,0 +1,14 @@
+<div class="exercise">
+  <p>Welcome to the sandbox!</p>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('p', function () {
+    const p = document.querySelector("p")
+    it('should have the text "I updated it!"', function () {
+      expect(p.textContent).to.equal("I updated it!");
+    });
+  });
+</script>

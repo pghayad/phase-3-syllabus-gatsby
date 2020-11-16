@@ -1,0 +1,27 @@
+<div class="exercise">
+  <div>
+    <p>You can ignore this one</p>
+  </div>
+  <div id="find-my-child">
+    <p>Find me</p>
+  </div>
+  <div>
+    <p>You can ignore me too</p>
+  </div>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('p', function () {
+    const element = document.querySelector("#find-my-child p")
+
+    it('should have the class "secondary"', function () {
+      expect(element.className).to.equal("secondary");
+    });
+
+    it('should have have a red color', function () {
+      expect(element.style.color).to.equal("red");
+    });
+  });
+</script>

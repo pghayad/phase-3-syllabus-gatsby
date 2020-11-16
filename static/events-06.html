@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/8.2.1/mocha.min.js" integrity="sha512-zfubXZH4ikPBZSjDepCk1BrPqZN/QAZ+6SurldYd8s7bmptUUqKf/cyG0PJJ9M5Z7/JlJkpg+qfYg9i9lJYG8w==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js" integrity="sha512-x3BwhuxT44pOQZanacQyDnrB2r1L1AUfjUaefYArTHR9sHEvvy3NSnnm5Z7GAl5YPc3+GEWFT0S34obDSzUvaQ==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chai-spies@1.0.0/chai-spies.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/8.2.1/mocha.min.css" integrity="sha512-6RWs5FczsXwODIZJoL0szz3bXX5W+q/m7bFVQ7HSwZbBXd7PpyYrg2f9Dr4Y2Guqi5k4NJsemxXuiiFoI8fQ4A==" crossorigin="anonymous" />
+
+  <!-- Mocha setup -->
+  <script>
+    mocha.setup({
+      ui: 'bdd',
+      cleanReferencesAfterRun: false
+    });
+  </script>
+  <style>
+    body {
+      background: whitesmoke;
+      margin: 0.5rem;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="mocha" class="hidden">
+  </div>
+
+  <div id="exercise" class="hidden">
+    <style>
+  input,
+  textarea {
+    display: block;
+  }
+</style>
+
+<div class="exercise">
+  <h3>Add Player</h3>
+  <form id="new-player">
+    <input type="text" name="name" placeholder="Name" />
+    <input type="number" name="number" placeholder="Number" />
+    <input type="text" name="photo" placeholder="Photo URL" />
+    <textarea name="nickname" placeholder="Nickname"></textarea>
+    <input type="submit" value="Add Player" />
+  </form>
+  <h3>Players</h3>
+  <div class="player-container">
+    <!-- players go here -->
+  </div>
+</div>
+
+<script>
+  const { expect } = chai
+
+  describe('form#new-player', function () {
+    const form = document.querySelector("#new-player")
+    const container = document.querySelector(".player-container")
+
+    beforeEach(function() {
+      while (container.firstChild) container.firstChild.remove()
+    })
+
+    it('should prevent the default behavior of form submitting', function () {
+      let defaultPrevented
+
+      function submitHandler(event) {
+        defaultPrevented = event.defaultPrevented
+        event.preventDefault()
+      }
+
+      form.addEventListener("submit", submitHandler)
+      form.querySelector("input[type='submit']").click()
+      form.removeEventListener("submit", submitHandler)
+
+      expect(defaultPrevented).to.equal(true)
+    });
+
+    it('should add a new player to the list when submitted', function () {
+      function submitHandler(event) {
+        event.preventDefault()
+      }
+
+      form.name.value = "Mo Salah"
+      form.number.value = "11"
+      form.nickname.value = "The Egyptian King"
+      form.photo.value = "https://cdn.cnn.com/cnnnext/dam/assets/190501145802-mo-salah-exlarge-169.jpg"
+
+      form.addEventListener("submit", submitHandler)
+      form.querySelector("input[type='submit']").click()
+      form.removeEventListener("submit", submitHandler)
+
+      const playerDiv = container.firstElementChild
+
+      expect(playerDiv).to.not.equal(null)
+      expect(playerDiv.dataset.number).to.equal("11")
+      expect(playerDiv.textContent.includes("Mo Salah")).to.equal(true)
+    });
+
+  });
+</script>
+
+  </div>
+
+  <script src="./assets/index.js"></script>
+</body>
+</html>

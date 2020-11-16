@@ -1,0 +1,116 @@
+---
+title: "Find & Update 7"
+publish: true
+---
+
+# Task
+
+Find the name, author, and ingredients fields from the form. Get the *value* of each of the fields, and display them using the appropriate fields below.
+
+# HTML
+
+```html
+<div class="exercise">
+  <form id="recipe-form">
+    <input type="text" id="name" name="name" />
+    <input type="text" id="author" name="author" />
+    <input type="text" id="image" name="image" />
+    <textarea id="ingredients" name="ingredients" rows="4"></textarea>
+    <input type="submit" />
+  </button>
+
+  <div id="recipe">
+    <h1 id="display-name">{recipe name}</h1>
+    <h2 id="display-author">{recipe author}</h2>
+    <img src="display-image" src="https://via.placeholder.com/300" alt="{recipe name}" />
+    <p id="display-ingredients">{recipe ingredients}</p>
+  </div>
+</div>
+```
+
+# Code Sandbox
+<Sandbox src="/dom-07.html" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const name = document.querySelector("#name").value
+const author = document.querySelector("#author").value
+const image = document.querySelector("#image").value
+const ingredients = document.querySelector("#ingredients").value
+
+document.querySelector("#display-name").textContent = name
+document.querySelector("#display-author").textContent = author
+document.querySelector("#display-image").src = image
+document.querySelector("#display-image").alt = name
+document.querySelector("#display-ingredients").textContent = ingredients
+```
+
+</details>
+
+<details>
+  <summary>Click to show another solution!</summary>
+
+```javascript
+const form = document.query
+// get the form element
+const form = document.querySelector("#recipe-form")
+
+// use the "name='input-name'" property of each input field to access each input from the form
+const name = form.name.value
+const author = form.author.value
+const image = form.image.value
+const ingredients = form.ingredients.value
+
+document.querySelector("#display-name").textContent = name
+document.querySelector("#display-author").textContent = author
+document.querySelector("#display-image").src = image
+document.querySelector("#display-image").alt = name
+document.querySelector("#display-ingredients").textContent = ingredients
+```
+
+</details>
+
+
+<details>
+  <summary>Click to show an advanced solution!</summary>
+
+```javascript
+// get the form element
+const form = document.querySelector("#recipe-form")
+
+// iterate over the form fields and collect them into an object
+const formData = {}
+for (let input of form) {
+    if (input.type !== "submit") {
+        formData[input.name] = input.value
+    }
+}
+// check this object out in the console:
+console.log(formData)
+
+// iterate over the keys in the object
+// (this part works only because the ids for the elements we're looking for are nicely formatted to match)
+for (let key in formData) {
+    const el = document.querySelector(`#display-${key}`)
+    if (el.tagName === "IMG") {
+        el.src = formData[key]
+        el.alt = formData.name
+    } else {
+        el.textContent = formData[key]
+    }
+}
+```
+
+</details>
+
+# Resources
+
+- [input](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
+- [Getting input value](https://www.tutorialrepublic.com/faq/how-to-get-the-value-of-text-input-field-using-javascript.php)
+- [for...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
+- [for...in](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)
+
