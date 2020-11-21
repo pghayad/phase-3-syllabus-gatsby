@@ -3,15 +3,15 @@ import { expect } from 'chai';
 import Layout from '../../components/IFrameLayout';
 import useMocha from '../../hooks/useMocha';
 
-const Exercise = () => {
+function Exercise() {
   const isMochaLoaded = useMocha(() => {
     const { describe, it } = window;
 
-    describe('h3', function() {
-      const h3 = document.querySelector('h3');
+    describe('ul.clear-me', function() {
+      const ul = document.querySelector('.clear-me');
 
-      it('should have the text "Hello!"', function() {
-        expect(h3.textContent).to.equal('Hello!');
+      it('should have no children', function() {
+        expect(ul.children.length).to.equal(0);
       });
     });
   });
@@ -19,10 +19,14 @@ const Exercise = () => {
   return (
     <Layout isMochaLoaded={isMochaLoaded}>
       <div className="exercise">
-        <h3>Change My Text</h3>
+        <ul className="clear-me">
+          <li>pls delete</li>
+          <li>remove me too</li>
+          <li>no longer want</li>
+        </ul>
       </div>
     </Layout>
   );
-};
+}
 
 export default Exercise;

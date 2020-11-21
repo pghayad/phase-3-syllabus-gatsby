@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import Layout from '../../components/IFrameLayout';
 import useMocha from '../../hooks/useMocha';
 
-const Exercise = () => {
+function Exercise() {
   const isMochaLoaded = useMocha(() => {
     const { describe, it } = window;
 
@@ -23,6 +23,6 @@ const Exercise = () => {
       </div>
     </Layout>
   );
-};
+}
 
 export default Exercise;

@@ -3,15 +3,15 @@ import { expect } from 'chai';
 import Layout from '../../components/IFrameLayout';
 import useMocha from '../../hooks/useMocha';
 
-const Exercise = () => {
+function Exercise() {
   const isMochaLoaded = useMocha(() => {
     const { describe, it } = window;
 
-    describe('h3', function() {
-      const h3 = document.querySelector('h3');
+    describe('span.likes-count', function() {
+      const element = document.querySelector('.likes-count');
 
-      it('should have the text "Hello!"', function() {
-        expect(h3.textContent).to.equal('Hello!');
+      it('should have the updated number of likes', function() {
+        expect(element.textContent).to.equal('12');
       });
     });
   });
@@ -19,10 +19,12 @@ const Exercise = () => {
   return (
     <Layout isMochaLoaded={isMochaLoaded}>
       <div className="exercise">
-        <h3>Change My Text</h3>
+        <button>
+          Likes: <span className="likes-count">11</span>
+        </button>
       </div>
     </Layout>
   );
-};
+}
 
 export default Exercise;
