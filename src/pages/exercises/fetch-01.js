@@ -1,37 +1,47 @@
 import React from 'react';
-import { expect } from 'chai';
-import { spy } from 'chai-spies';
-import fetchMock from 'fetch-mock';
+import chai, { expect } from 'chai';
+import spies from 'chai-spies';
+import { setupWorker, rest } from 'msw';
 import Layout from '../../components/IFrameLayout';
 import useMocha from '../../hooks/useMocha';
+
+chai.use(spies);
 
 function Exercise() {
   const isMochaLoaded = useMocha(() => {
     const { after, before, beforeEach, describe, it } = window;
 
-    const response = {
-      name: 'bulbasaur!',
-      sprites: {
-        front_default:
-          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-      },
-      abilities: [
-        {
-          ability: {
-            name: 'overgrow',
-          },
-        },
-        {
-          ability: {
-            name: 'chlorophyll',
-          },
-        },
-      ],
-    };
+    const worker = setupWorker(
+      rest.get('https://pokeapi.co/api/v2/pokemon/1/', (req, res, ctx) => {
+        return res(
+          ctx.delay(500),
+          ctx.status(200, 'OK'),
+          ctx.json({
+            name: 'bulbasaur!',
+            sprites: {
+              front_default:
+                'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+            },
+            abilities: [
+              {
+                ability: {
+                  name: 'overgrow',
+                },
+              },
+              {
+                ability: {
+                  name: 'chlorophyll',
+                },
+              },
+            ],
+          })
+        );
+      })
+    );
 
     describe('getPokemon()', function() {
       before(function() {
-        fetchMock.mock('https://www.metaweather.com/api/location/44418/', response);
+        worker.start();
       });
 
       beforeEach(function() {
@@ -41,11 +51,11 @@ function Exercise() {
       });
 
       after(function() {
-        fetchMock.restore();
+        worker.stop();
       });
 
       it("sends a fetch request to 'https://pokeapi.co/api/v2/pokemon/1/'", async function() {
-        const fetchSpy = spy.on(window, 'fetch');
+        const fetchSpy = chai.spy.on(window, 'fetch');
 
         // eslint-disable-next-line no-undef
         await getPokemon();

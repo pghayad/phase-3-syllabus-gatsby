@@ -1,27 +1,39 @@
 import React from 'react';
-import { expect } from 'chai';
-import { spy } from 'chai-spies';
-import fetchMock from 'fetch-mock';
+import chai, { expect } from 'chai';
+import spies from 'chai-spies';
+import { setupWorker, rest } from 'msw';
 import Layout from '../../components/IFrameLayout';
 import useMocha from '../../hooks/useMocha';
+
+chai.use(spies);
 
 function Exercise() {
   const isMochaLoaded = useMocha(() => {
     const { after, before, describe, it } = window;
 
-    before(function() {
-      fetchMock.mock('https://randomfox.ca/floof/', {
-        image: 'https://randomfox.ca/images',
-      });
-    });
-
-    after(function() {
-      fetchMock.restore();
-    });
+    const worker = setupWorker(
+      rest.get('https://randomfox.ca/floof/', (req, res, ctx) => {
+        return res(
+          ctx.delay(500),
+          ctx.status(200, 'OK'),
+          ctx.json({
+            image: 'https://randomfox.ca/images/86.jpg',
+          })
+        );
+      })
+    );
 
     describe('getFox()', function() {
+      before(function() {
+        worker.start();
+      });
+
+      after(function() {
+        worker.stop();
+      });
+
       it("sends a fetch request to 'https://randomfox.ca/floof/'", async function() {
-        const fetchSpy = spy.on(window, 'fetch');
+        const fetchSpy = chai.spy.on(window, 'fetch');
 
         // eslint-disable-next-line no-undef
         await getFox();
