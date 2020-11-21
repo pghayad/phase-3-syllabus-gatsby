@@ -1,4 +1,4 @@
-const componentWithMDXScope = require('gatsby-plugin-mdx/component-with-mdx-scope');
+require('gatsby-plugin-mdx/component-with-mdx-scope');
 
 const path = require('path');
 
@@ -51,8 +51,12 @@ exports.createPages = ({ graphql, actions }) => {
   });
 };
 
+// setup monaco to be compiled through webpack
+const MonacoWebpackPlugin = require(`monaco-editor-webpack-plugin`);
+
 exports.onCreateWebpackConfig = ({ actions }) => {
   actions.setWebpackConfig({
+    plugins: [new MonacoWebpackPlugin()],
     resolve: {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       alias: {
@@ -107,15 +111,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       value: node.frontmatter.title || startCase(parent.name),
     });
   }
-};
-
-// setup monaco to be compiled through webpack
-const MonacoWebpackPlugin = require(`monaco-editor-webpack-plugin`);
-
-exports.onCreateWebpackConfig = ({ actions }) => {
-  actions.setWebpackConfig({
-    plugins: [new MonacoWebpackPlugin()],
-  });
 };
 
 // serve static files
