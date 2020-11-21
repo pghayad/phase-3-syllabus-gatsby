@@ -1,48 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { expect } from 'chai';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-
-// hookz
-const loadScript = src => {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-
-    script.src = src;
-
-    script.onload = () => resolve(script);
-    script.onerror = () => reject(new Error(`Script load error for ${src}`));
-
-    document.head.append(script);
-  });
-};
-
-const useScript = src => {
-  const [status, setStatus] = useState('pending');
-
-  useEffect(() => {
-    loadScript(src)
-      .then(() => setStatus('loaded'))
-      .catch(() => setStatus('error'));
-  }, []);
-
-  return {
-    isLoaded: status === 'loaded',
-    isError: status === 'error',
-  };
-};
-
-const useMocha = test => {
-  const { isLoaded } = useScript('https://cdnjs.cloudflare.com/ajax/libs/mocha/8.2.1/mocha.min.js');
-
-  useEffect(() => {
-    if (isLoaded) {
-      test();
-    }
-  }, [isLoaded]);
-
-  return isLoaded;
-};
 
 // Layout
 const StyledContainer = styled.div`
@@ -143,26 +101,4 @@ const IFrameLayout = ({ children, isMochaLoaded }) => {
   );
 };
 
-const Hello = () => {
-  const isMochaLoaded = useMocha(() => {
-    const { describe, it } = window;
-
-    describe('h3', function() {
-      const h3 = document.querySelector('h3');
-
-      it('should have the text "Hello!"', function() {
-        expect(h3.textContent).to.equal('Hello!');
-      });
-    });
-  });
-
-  return (
-    <IFrameLayout isMochaLoaded={isMochaLoaded}>
-      <div className="exercise">
-        <h3>Change My Text</h3>
-      </div>
-    </IFrameLayout>
-  );
-};
-
-export default Hello;
+export default IFrameLayout;
