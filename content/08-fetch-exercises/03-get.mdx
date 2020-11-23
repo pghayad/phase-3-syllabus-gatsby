@@ -1,0 +1,218 @@
+---
+title: "GET 3"
+metaTitle: "Fetch Exercises | GET 3"
+publish: true
+---
+
+# Task
+
+Make a `GET` request to `https://localhost:3000/shopping_lists/1` to get a shopping list with a list of items to purchase.
+
+**NOTE**: This exercise uses a mocked API, so you will only be able to view the API response by using a console.log within the sandbox.
+
+```
+GET /shopping_list/1
+
+Example Response:
+{
+  id: 1,
+  name: "Groceries",
+  budget: 80,
+  items: [
+    {
+      id: 1,
+      name: 'Eggs',
+      price: 3,
+      purchased: false,
+      shoppingListId: 1,
+    },
+    {
+      id: 2,
+      name: 'Coffee',
+      price: 9,
+      purchased: true,
+      shoppingListId: 1,
+    },
+    {
+      id: 3,
+      name: 'Cereal',
+      price: 4,
+      purchased: true,
+      shoppingListId: 1,
+    },
+  ]
+}
+```
+
+Display the info in the HTML below. As a BONUS, display the total price of all the *purchased* items on the list.
+
+# HTML
+
+```html
+<div class="exercise">
+  <h1 id="list">{list name}</h1>
+  <h3 id="budget">Budget: ${list budget}</h3>
+  <ul class="items">
+    <!-- items here -->
+  </ul>
+  <p id="total">Total price: ${price of all purchased items (BONUS!)}</p>
+</div>
+```
+
+Use this as a template for creating a `<li>` for each item in the list.
+
+```html
+<li class="item" data-id="{item id}">
+  <p class="details">{item name} | ${item price}</p>
+  <p class="purchased">Purchased: {item purchased}</p>
+  <button class="remove-btn" data-action="remove">Remove</button>
+  <button class="purchase-btn" data-action="purchase">Mark As Purchased</button>
+</li>
+```
+
+Write your code in the `getList` function, making sure to return a Promise by returning the `fetch` call (this is required so the tests will work). You can write any helper functions you need, so long as `getList` returns the Promise from calling `fetch`.
+
+# Starter Code
+
+```javascript
+const url = "https://localhost:3000/shopping_lists/1"
+const getList = () => {
+  return fetch(url)
+    .then(r => r.json())
+    .then(shoppingList => console.log(shoppingList))
+}
+
+getList()
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-03" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const url = "https://localhost:3000/shopping_lists/1"
+
+const getList = () => {
+  return fetch(url)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const itemsUl = document.querySelector(".items")
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+
+  const detailsP = document.createElement("p")
+  detailsP.textContent = `${item.name} | $${item.price}`
+  detailsP.className = "details"
+
+  const purchasedP = document.createElement("p")
+  purchasedP.textContent = `Purchased: ${item.purchased}`
+  purchasedP.className = "purchased"
+
+  const removeBtn = document.createElement("button")
+  removeBtn.className = "remove-btn"
+  removeBtn.dataset.action = "remove"
+  removeBtn.textContent = "Remove"
+
+  const purchaseBtn = document.createElement("button")
+  purchaseBtn.className = "purchase-btn"
+  purchaseBtn.dataset.action = "purchase"
+  purchaseBtn.textContent = "Mark As Purchased"
+
+  itemLi.append(detailsP, purchasedP, removeBtn, purchaseBtn)
+
+  itemsUl.append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+
+  shoppingList.items.forEach(renderItem)
+}
+
+getList()
+```
+
+</details>
+
+
+<details>
+  <summary>Click to show solution with bonus!</summary>
+
+```javascript
+const url = "https://localhost:3000/shopping_lists/1"
+
+const getList = () => {
+  return fetch(url)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const itemsUl = document.querySelector(".items")
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+
+  const detailsP = document.createElement("p")
+  detailsP.textContent = `${item.name} | $${item.price}`
+  detailsP.className = "details"
+
+  const purchasedP = document.createElement("p")
+  purchasedP.textContent = `Purchased: ${item.purchased}`
+  purchasedP.className = "purchased"
+
+  const removeBtn = document.createElement("button")
+  removeBtn.className = "remove-btn"
+  removeBtn.dataset.action = "remove"
+  removeBtn.textContent = "Remove"
+
+  const purchaseBtn = document.createElement("button")
+  purchaseBtn.className = "purchase-btn"
+  purchaseBtn.dataset.action = "purchase"
+  purchaseBtn.textContent = "Mark As Purchased"
+
+  itemLi.append(detailsP, purchasedP, removeBtn, purchaseBtn)
+
+  itemsUl.append(itemLi)
+}
+
+const getTotal = items => {
+  const purchasedItems = items.filter(item => item.purchased)
+  const total = purchasedItems.reduce((sum, item) => sum + item.price, 0)
+  return total
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+
+  shoppingList.items.forEach(renderItem)
+
+  const totalP = document.querySelector("#total")
+  const total = getTotal(shoppingList.items)
+  totalP.textContent = `Total price: $${total}`
+}
+
+getList()
+```
+
+</details>
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

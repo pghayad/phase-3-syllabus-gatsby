@@ -1,0 +1,241 @@
+---
+title: "DELETE 2"
+metaTitle: "Fetch Exercises | DELETE 2"
+publish: true
+---
+
+# Task
+
+When the user clicks the Remove button, make a `DELETE` request to `https://localhost:3000/items/:id` using the `deleteItem` function you made in the previous exercise to remove the item from the list on the server. You should also remove the item from the DOM.
+
+**NOTE**: This exercise uses a mocked API, so you will only be able to view the API response by using a console.log within the sandbox.
+
+# HTML
+
+```html
+<div class="exercise">
+<h1 id="list">{list name}</h1>
+  <h3 id="budget">Budget: ${list budget}</h3>
+  <ul class="items">
+    <!-- items here -->
+  </ul>
+</div>
+```
+
+# Starter Code
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+const listUrl = "https://localhost:3000/shopping_lists/1"
+
+const deleteItem = id => {
+  return fetch(`${itemUrl}/${id}`, {
+    method: "DELETE"
+  })
+}
+
+const getList = () => {
+  return fetch(listUrl)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const itemsUl = document.querySelector(".items")
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+
+  const detailsP = document.createElement("p")
+  detailsP.textContent = `${item.name} | $${item.price}`
+  detailsP.className = "details"
+
+  const purchasedP = document.createElement("p")
+  purchasedP.textContent = `Purchased: ${item.purchased}`
+  purchasedP.className = "purchased"
+
+  const removeBtn = document.createElement("button")
+  removeBtn.className = "remove-btn"
+  removeBtn.dataset.action = "remove"
+  removeBtn.textContent = "Remove"
+
+  const purchaseBtn = document.createElement("button")
+  purchaseBtn.className = "purchase-btn"
+  purchaseBtn.dataset.action = "purchase"
+  purchaseBtn.textContent = "Mark As Purchased"
+
+  itemLi.append(detailsP, purchasedP, removeBtn, purchaseBtn)
+
+  itemsUl.append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+
+  shoppingList.items.forEach(renderItem)
+}
+
+getList()
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-09" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution with individual event listeners!</summary>
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+const listUrl = "https://localhost:3000/shopping_lists/1"
+
+const deleteItem = id => {
+  return fetch(`${itemUrl}/${id}`, {
+    method: "DELETE"
+  })
+}
+
+const getList = () => {
+  return fetch(listUrl)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const itemsUl = document.querySelector(".items")
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+
+  const detailsP = document.createElement("p")
+  detailsP.textContent = `${item.name} | $${item.price}`
+  detailsP.className = "details"
+
+  const purchasedP = document.createElement("p")
+  purchasedP.textContent = `Purchased: ${item.purchased}`
+  purchasedP.className = "purchased"
+
+  const removeBtn = document.createElement("button")
+  removeBtn.className = "remove-btn"
+  removeBtn.dataset.action = "remove"
+  removeBtn.textContent = "Remove"
+
+  const purchaseBtn = document.createElement("button")
+  purchaseBtn.className = "purchase-btn"
+  purchaseBtn.dataset.action = "purchase"
+  purchaseBtn.textContent = "Mark As Purchased"
+
+  /**** Event Listener Code ****/
+  removeBtn.addEventListener("click", () => {
+    // optimistic rendering
+    itemLi.remove()
+
+    deleteItem(item.id)
+  })
+
+  itemLi.append(detailsP, purchasedP, removeBtn, purchaseBtn)
+
+  itemsUl.append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+
+  shoppingList.items.forEach(renderItem)
+}
+
+getList()
+```
+
+</details>
+
+<details>
+  <summary>Click to show solution with event delegation!</summary>
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+const listUrl = "https://localhost:3000/shopping_lists/1"
+
+const deleteItem = id => {
+  return fetch(`${itemUrl}/${id}`, {
+    method: "DELETE"
+  })
+}
+
+const getList = () => {
+  return fetch(listUrl)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+/**** Event Delegation Code ****/
+const itemsUl = document.querySelector(".items")
+
+itemsUl.addEventListener("click", event => {
+  if (event.target.dataset.action === "remove") {
+    const itemLi = event.target.closest(".item")
+    const id = itemLi.dataset.id
+
+    // optimistic rendering
+    itemLi.remove()
+
+    deleteItem(id)
+  }
+})
+
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+
+  const detailsP = document.createElement("p")
+  detailsP.textContent = `${item.name} | $${item.price}`
+  detailsP.className = "details"
+
+  const purchasedP = document.createElement("p")
+  purchasedP.textContent = `Purchased: ${item.purchased}`
+  purchasedP.className = "purchased"
+
+  const removeBtn = document.createElement("button")
+  removeBtn.className = "remove-btn"
+  removeBtn.dataset.action = "remove"
+  removeBtn.textContent = "Remove"
+
+  const purchaseBtn = document.createElement("button")
+  purchaseBtn.className = "purchase-btn"
+  purchaseBtn.dataset.action = "purchase"
+  purchaseBtn.textContent = "Mark As Purchased"
+
+  itemLi.append(detailsP, purchasedP, removeBtn, purchaseBtn)
+
+  itemsUl.append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+
+  shoppingList.items.forEach(renderItem)
+}
+
+getList()
+```
+
+</details>
+
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

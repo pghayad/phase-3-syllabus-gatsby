@@ -1,0 +1,86 @@
+---
+title: "GET 2"
+metaTitle: "Fetch Exercises | GET 2"
+publish: true
+---
+
+# Task
+
+Make a `GET` request to `https://api.weather.gov/gridpoints/OKX/35,33/forecast` to get the upcoming weather. For each day in the `properties.periods` array, create a new `<div>` that looks like this:
+
+```html
+<div class="forecast">
+  <h2>{name}</h2>
+  <h3>{shortForecast}</h3>
+  <img src="{icon}" alt="{shortForecast}" />
+  <p class="detail">{detailedForecast}</p>
+  <p class="temp">Temperature: {temperature}</p>
+  <hr />
+</div>
+```
+
+# HTML
+
+```html
+<div class="exercise">
+  <section id="weather">
+    <!-- add weather here -->
+  </section>
+</div>
+```
+
+Write your code in the `getWeather` function, making sure to return a Promise by returning the `fetch` call (this is required so the tests will work). You can write any helper functions you need, so long as `getWeather` returns the Promise from calling `fetch`.
+
+# Starter Code
+
+```javascript
+const url = "https://api.weather.gov/gridpoints/OKX/35,33/forecast"
+const getWeather = () => {
+  return fetch(url)
+}
+
+getWeather()
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-02" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const url = "https://api.weather.gov/gridpoints/OKX/35,33/forecast"
+const weatherContainer = document.querySelector("#weather")
+
+const getWeather = () => {
+  return fetch(url)
+    .then(r => r.json())
+    .then(weatherData => {
+      weatherData.properties.periods.forEach(renderForecast)
+    })
+}
+
+const renderForecast = forecast => {
+  const div = document.createElement("div")
+  div.className = "forecast"
+  div.innerHTML = `
+  <h2>${forecast.name}</h2>
+  <h3>${forecast.shortForecast}</h3>
+  <img src="${forecast.icon}" alt="${forecast.shortForecast}" />
+  <p class="detail">${forecast.detailedForecast}</p>
+  <p class="temp">Temperature: ${forecast.temperature}</p>
+  <hr />
+  `
+  weatherContainer.append(div)
+}
+
+getWeather()
+```
+
+</details>
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

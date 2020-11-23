@@ -1,0 +1,63 @@
+---
+title: "DELETE 1"
+metaTitle: "Fetch Exercises | DELETE 1"
+publish: true
+---
+
+# Task
+
+Write a function called `deleteItem`. This function should take in one argument: `id`, which should be an ID number for an item. When the function is called, make a `DELETE` request to `https://localhost:3000/items/:id` using the ID to update the item on the server.
+
+In the next exercise, we'll use this function along with an event handler; for now, just focus on writing the `deleteItem` function.
+
+**NOTE**: This exercise uses a mocked API, so you will only be able to view the API response by using a console.log within the sandbox.
+
+# API Documentation
+```
+DELETE /items/:id
+
+Required Headers
+NONE
+
+Required Keys In Body
+NONE
+
+Example Response:
+{}
+```
+
+Write your `fetch` code in the `deleteItem` function, making sure to return a Promise by returning the `fetch` call (this is required so the tests will work). You can write any helper functions you need, so long as `deleteItem` returns the Promise from calling `fetch`.
+
+# Starter Code
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+
+const deleteItem = id => {
+  return fetch()
+}
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-08" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+
+const deleteItem = (id, data) => {
+  return fetch(`${itemUrl}/${id}`, {
+    method: "DELETE"
+  })
+}
+```
+
+</details>
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

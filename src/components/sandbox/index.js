@@ -38,7 +38,7 @@ const StyledButton = styled.button`
 `;
 
 const Sandbox = ({ src, starterCode = '// your code here' }) => {
-  const [javascript, setJavascript] = useLocalStorage(src, starterCode);
+  const [javascript, setJavascript] = useLocalStorage(`${src}.html`, starterCode);
 
   const [runTest, setRunTest] = useState(false);
 
@@ -97,7 +97,7 @@ const Sandbox = ({ src, starterCode = '// your code here' }) => {
 
   return (
     <StyledContainer testStatus={testStatus}>
-      <StyledIFrame title="sandbox" ref={iframeRef} src={src} />
+      <StyledIFrame title="sandbox" ref={iframeRef} src={`/exercises${src}`} />
       <Editor ref={editorRef} value={javascript} />
       <div>
         <StyledButton onClick={() => runCode(false)}>Run Code</StyledButton>

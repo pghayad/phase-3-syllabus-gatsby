@@ -1,0 +1,85 @@
+---
+title: "GET 1"
+metaTitle: "Fetch Exercises | GET 1"
+publish: true
+---
+
+# Task
+
+Make a `GET` request to `https://pokeapi.co/api/v2/pokemon/1/`. Display the following information about the pokemon:
+
+- The **name** in the `h1#name`
+- The **front default sprite** in the `img#sprite`, along with an alt text of the pokemon's **name**
+- A list of **abilities** in the `ul#abilities`, by creating a `<li>` for each ability
+
+**NOTE**: The pokemon object returned by the API is a complex and deeply nested hash! Make sure to console.log it and try to access the key pieces of data *before* working on any DOM manipulation.
+
+# HTML
+
+```html
+<div class="exercise">
+  <div class="image-holder">
+    <h1 id="name">{pokemon name}</h3>
+    <img id="sprite" src="https://via.placeholder.com/300" alt="{pokemon name}" />
+    <ul id="abilities">
+      <!-- add abilities here -->
+    </ul>
+  </div>
+</div>
+```
+
+Write your code in the `getPokemon` function, making sure to return a Promise by returning the `fetch` call (this is required so the tests will work). You can write any helper functions you need, so long as `getPokemon` returns the Promise from calling `fetch`.
+
+# Starter Code
+
+```javascript
+const url = "https://pokeapi.co/api/v2/pokemon/1/"
+const getPokemon = () => {
+  return fetch(url)
+}
+
+getPokemon()
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-01" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const url = "https://pokeapi.co/api/v2/pokemon/1/"
+const getPokemon = () => {
+  return fetch(url)
+    .then(r => r.json())
+    .then(renderPokemon)
+}
+
+const renderPokemon = pokemonObj => {
+  const name = document.querySelector("#name")
+  name.textContent = pokemonObj.name
+
+  const sprite = document.querySelector("#sprite")
+  sprite.src = pokemonObj.sprites.front_default
+  sprite.alt = pokemonObj.name
+
+  pokemon.abilities.forEach(renderAbility)
+}
+
+const renderAbility = abilityObj => {
+  const li = document.createElement("li")
+  li.textContent = abilityObj.ability.name
+  const ul = document.querySelector("#abilities")
+  ul.append(li)
+}
+
+getPokemon()
+```
+
+</details>
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

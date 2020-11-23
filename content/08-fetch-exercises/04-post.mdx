@@ -1,0 +1,145 @@
+---
+title: "POST 1"
+metaTitle: "Fetch Exercises | POST 1"
+publish: true
+---
+
+# Task
+
+Write a function called `addItem`. This function should take in one argument, `item` which will be an object. When the function is called, make a `POST` request to `https://localhost:3000/items` to add a new item to a shopping list.
+
+In the next exercise, we'll use this function along with a form in order to let the user create new items; for now, just focus on writing the `addItem` function.
+
+**NOTE**: This exercise uses a mocked API, so you will only be able to view the API response by using a console.log within the sandbox.
+
+# API Documentation
+```
+POST /items
+
+Required Headers
+{
+  "Content-Type": "application/json"
+}
+
+Required Keys In Body
+{
+  shoppingListId: 1,
+  name: "Orange Juice",
+  price: 3
+}
+
+Example Response:
+{
+  id: 4,
+  name: "Orange Juice",
+  price: 3,
+  purchased: false,
+  shoppingListId: 1
+}
+```
+
+Write your `fetch` code in the `addItem` function, making sure to return a Promise by returning the `fetch` call (this is required so the tests will work). You can write any helper functions you need, so long as `addItem` returns the Promise from calling `fetch`.
+
+# Starter Code
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+const listUrl = "https://localhost:3000/shopping_lists/1"
+
+const addItem = item => {
+  return fetch(itemUrl, {})
+}
+
+const getList = () => {
+  return fetch(listUrl)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+  itemLi.innerHTML = `
+  <p class="details">${item.name} | $${item.price}</p>
+  <p class="purchased">Purchased: ${item.purchased}</p>
+  <button class="remove-btn" data-action="remove">Remove</button>
+  <button class="purchase-btn" data-action="purchase">Mark As Purchased</button>
+  `
+
+  document.querySelector(".items").append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+
+  shoppingList.items.forEach(renderItem)
+}
+
+getList()
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-04" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+const listUrl = "https://localhost:3000/shopping_lists/1"
+
+const addItem = item => {
+  return fetch(itemUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(item)
+  })
+    .then(r => r.json())
+    .then(renderItem)
+}
+
+const getList = () => {
+  return fetch(listUrl)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+  itemLi.innerHTML = `
+  <p class="details">${item.name} | $${item.price}</p>
+  <p class="purchased">Purchased: ${item.purchased}</p>
+  <button class="remove-btn" data-action="remove">Remove</button>
+  <button class="purchase-btn" data-action="purchase">Mark As Purchased</button>
+  `
+
+  document.querySelector(".items").append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+  shoppingList.items.forEach(renderItem)
+}
+getList()
+```
+
+</details>
+
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

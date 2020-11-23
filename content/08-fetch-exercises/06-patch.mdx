@@ -1,0 +1,77 @@
+---
+title: "PATCH 1"
+metaTitle: "Fetch Exercises | PATCH 1"
+publish: true
+---
+
+# Task
+
+Write a function called `updateItem`. This function should take in two argument: `id`, which should be an ID number for an item; and `data`, which should be an object. When the function is called, make a `PATCH` request to `https://localhost:3000/items/:id` using the ID to update the item on the server.
+
+In the next exercise, we'll use this function along with an event handler; for now, just focus on writing the `updateItem` function.
+
+**NOTE**: This exercise uses a mocked API, so you will only be able to view the API response by using a console.log within the sandbox.
+
+# API Documentation
+```
+PATCH /items/:id
+
+Required Headers
+{
+  "Content-Type": "application/json"
+}
+
+Required Keys In Body
+{
+  purchased: true
+}
+
+Example Response:
+{
+  id: 4,
+  name: "Orange Juice",
+  price: 3,
+  purchased: true,
+  shoppingListId: 1
+}
+```
+
+Write your `fetch` code in the `updateItem` function, making sure to return a Promise by returning the `fetch` call (this is required so the tests will work). You can write any helper functions you need, so long as `updateItem` returns the Promise from calling `fetch`.
+
+# Starter Code
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+
+const updateItem = (id, data) => {
+  return fetch()
+}
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-06" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+
+const updateItem = (id, data) => {
+  return fetch(`${itemUrl}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+}
+```
+
+</details>
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

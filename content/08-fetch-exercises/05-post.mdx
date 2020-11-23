@@ -1,0 +1,183 @@
+---
+title: "POST 2"
+metaTitle: "Fetch Exercises | POST 2"
+publish: true
+---
+
+# Task
+
+When the user submits the `form#add-item`, make a `POST` request to `https://localhost:3000/items` using the `addItem` function you made in the previous exercise to add a new item to a shopping list. Display the newly created item in the `ul.items`.
+
+**NOTE**: This exercise uses a mocked API, so you will only be able to view the API response by using a console.log within the sandbox.
+
+# HTML
+
+```html
+<div class="exercise">
+  <form id="add-item">
+    <h2>Add Item</h2>
+    <input type="hidden" id="shoppingListId" name="shoppingListId" value="1" />
+    <label>
+      Name: <input type="text" id="name" name="name" />
+    </label>
+    <label>
+      Price: <input type="number" id="price" price="name" />
+    </label>
+    <button type="submit">Add Item</button>
+  </form>
+
+  <h1 id="list">{list name}</h1>
+  <h3 id="budget">Budget: ${list budget}</h3>
+  <ul class="items">
+    <!-- items here -->
+  </ul>
+</div>
+```
+
+# HTML
+
+```html
+<div class="exercise">
+  <h1 id="list">{list name}</h1>
+  <h3 id="budget">Budget: ${list budget}</h3>
+  <ul class="items">
+    <!-- items here -->
+  </ul>
+</div>
+```
+
+Use this as a template for creating a `<li>` for each item in the list.
+
+```html
+<li class="item" data-id="{item id}">
+  <p class="details">{item name} | ${item price}</p>
+  <p class="purchased">Purchased: {item purchased}</p>
+  <button class="remove-btn" data-action="remove">Remove</button>
+  <button class="purchase-btn" data-action="purchase">Mark As Purchased</button>
+</li>
+```
+
+Create your form submit handler and make sure you can get the form data. Use the `addItem` function by passing in an object with the form data.
+
+# Starter Code
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+const listUrl = "https://localhost:3000/shopping_lists/1"
+
+const addItem = item => {
+  return fetch(itemUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(item)
+  })
+}
+
+const getList = () => {
+  return fetch(listUrl)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+  itemLi.innerHTML = `
+  <p class="details">${item.name} | $${item.price}</p>
+  <p class="purchased">Purchased: ${item.purchased}</p>
+  <button class="remove-btn" data-action="remove">Remove</button>
+  <button class="purchase-btn" data-action="purchase">Mark As Purchased</button>
+  `
+
+  document.querySelector(".items").append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+
+  shoppingList.items.forEach(renderItem)
+}
+
+getList()
+```
+
+# Code Sandbox
+<Sandbox src="/fetch-05" />
+
+# Solution
+
+<details>
+  <summary>Click to show solution!</summary>
+
+```javascript
+const itemUrl = "https://localhost:3000/items"
+const listUrl = "https://localhost:3000/shopping_lists/1"
+
+/**** Event Listener Code ****/
+const form = document.querySelector("#add-item")
+form.addEventListener("submit", event => {
+  event.preventDefault()
+  const newItem = {
+    shoppingListId: parseInt(form.shoppingListId.value),
+    name: form.name.value,
+    price: parseInt(form.price.value)
+  }
+  // pessimistic rendering (see .then in addItem)
+  addItem(newItem)
+})
+
+const addItem = item => {
+  return fetch(itemUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(item)
+  })
+    .then(r => r.json())
+    .then(renderItem)
+}
+
+const getList = () => {
+  return fetch(listUrl)
+    .then(r => r.json())
+    .then(renderList)
+}
+
+const renderItem = item => {
+  const itemLi = document.createElement("li")
+  itemLi.dataset.id = item.id
+  itemLi.className = "item"
+  itemLi.innerHTML = `
+  <p class="details">${item.name} | $${item.price}</p>
+  <p class="purchased">Purchased: ${item.purchased}</p>
+  <button class="remove-btn" data-action="remove">Remove</button>
+  <button class="purchase-btn" data-action="purchase">Mark As Purchased</button>
+  `
+
+  document.querySelector(".items").append(itemLi)
+}
+
+const renderList = shoppingList => {
+  const listH1 = document.querySelector("#list")
+  listH1.textContent = shoppingList.name
+  const budgetH3 = document.querySelector("#budget")
+  budgetH3.textContent = `Budget: $${shoppingList.budget}`
+  shoppingList.items.forEach(renderItem)
+}
+getList()
+```
+
+</details>
+
+
+# Resources
+
+- [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

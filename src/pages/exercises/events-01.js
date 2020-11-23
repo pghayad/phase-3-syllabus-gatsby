@@ -5,11 +5,7 @@ import Layout from '../../components/IFrameLayout';
 import useMocha from '../../hooks/useMocha';
 
 const StyledExercise = styled.div`
-  .exercise {
-    height: 100vh;
-    width: 100vw;
-  }
-  .exercise.dark-mode {
+  &.dark-mode {
     color: #f1f1f1;
     background-color: #333;
   }

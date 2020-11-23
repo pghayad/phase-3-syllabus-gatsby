@@ -53,6 +53,8 @@
     "react-instantsearch-dom": "^6.0.0",
     "react-live": "^2.2.2",
     "react-query": "^2.26.2",
+    "sinon": "^9.2.1",
+    "sinon-chai": "^3.5.0",
     "styled-components": "^4.4.1",
     "styled-icons": "^9.0.1"
   },
@@ -61,7 +63,6 @@
   "scripts": {
     "start": "npx msw init ./static && gatsby develop",
     "build": "npx msw init ./static && gatsby build --prefix-paths",
-    "build:exercises": "node ./exercises/build.js",
     "format": "prettier --write \"src/**/*.{js,jsx,css,json}\"",
     "lint": "eslint --fix \"src/**/*.{js,jsx}\""
   },
