@@ -137,6 +137,7 @@ const renderItem = item => {
   purchaseBtn.dataset.action = "purchase"
   purchaseBtn.textContent = "Mark As Purchased"
 
+  /**** Event Listener Code ****/ 
   purchaseBtn.addEventListener("click", () => {
     // optimistic rendering
     purchasedP.textContent = `Purchased: true`
@@ -192,6 +193,7 @@ const getList = () => {
 
 const itemsUl = document.querySelector(".items")
 
+/**** Event Delegation Code ****/ 
 itemsUl.addEventListener("click", event => {
   if (event.target.dataset.action === "purchase") {
     const itemLi = event.target.closest(".item")
