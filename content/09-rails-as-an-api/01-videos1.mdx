@@ -1,6 +1,6 @@
 ---
-title: "Lesson Videos: API Setup"
-metaTitle: "Rails as an API | Lesson Videos: API Setup"
+title: 'Lesson Videos: API Setup'
+metaTitle: 'Rails as an API | Lesson Videos: API Setup'
 publish: true
 ---
 
@@ -62,7 +62,7 @@ This will show you all the option flags you can use when creating a new Rails pr
 Here's what we'll run to set up our API:
 
 ```bash
-rails new <my_app_name> --api --database==postgresql -T
+rails new <my_app_name> --api --database=postgresql -T
 ```
 
 _(Replace `<my_app_name>` with the actual name of your project)_
@@ -70,7 +70,7 @@ _(Replace `<my_app_name>` with the actual name of your project)_
 This is what the option flags we're using do:
 
 - `--api`: "Preconfigure smaller stack for API only apps". Don't include code for generating **Views**.
-- `--database==postgresql`: Use Postgresql as the database instead of SQLite. Will make it easier to deploy our app.
+- `--database=postgresql`: Use Postgresql as the database instead of SQLite. Will make it easier to deploy our app.
 - `-T`: Skip test files.
 
 > If you forget the `--api` flag you need to add this in your ApplicationController: `skip_before_action :verify_authenticity_token`
@@ -83,7 +83,7 @@ Navigate to your Gemfile and uncomment `gem 'rack-cors'` and run `bundle install
 
 Basically, CORS is a security feature that prevents API calls from unknown origins. For example, if someone tried to use some malicious JavaScript to steal your bank information and your bank allowed API calls from anywhere, this could be a bad news bears™️ situation.
 
-Let's say your bank is hosted on `https://bankofamerica.com` but a clever hacker tried to impersonate you and send a request with an *origin* of `https://couponvirus.org`. Ideally, your bank would reject requests from unknown *origins* such as `couponvirus.org` and only allow requests from trusted origins or domains like `bankofamerica.com`
+Let's say your bank is hosted on `https://bankofamerica.com` but a clever hacker tried to impersonate you and send a request with an _origin_ of `https://couponvirus.org`. Ideally, your bank would reject requests from unknown _origins_ such as `couponvirus.org` and only allow requests from trusted origins or domains like `bankofamerica.com`
 
 Inside of `config/initializers/cors.rb`, uncomment the following code:
 
@@ -106,7 +106,7 @@ Inside the `allow` block:
 - `origins '*'`
   - allow requests from **all** origins. For now, we will leave the origins open. Later on, we can change this to only allow requests from the address of the frontend repo––localhost:8000 or `www.myapp.com` for example.
 - `methods: [:get, :post, :put, :patch, :delete, :options, :head]`
- - allow requests using these HTTP verbs to the API. Read [this](https://www.w3schools.com/tags/ref_httpmethods.asp) if you need a refresher on HTTP methods.
+- allow requests using these HTTP verbs to the API. Read [this](https://www.w3schools.com/tags/ref_httpmethods.asp) if you need a refresher on HTTP methods.
 
 # Versioning
 
@@ -148,4 +148,3 @@ end
 ```
 
 Now we can write our controller actions, like usual, to get our API to return some data.
-
